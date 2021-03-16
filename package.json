@@ -1,0 +1,22 @@
+{
+  "name": "offlinechatbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "offlinebot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "dotenv": "^8.2.0",
+    "fs": "0.0.1-security",
+    "got": "^11.8.1",
+    "humanize-duration": "^3.25.1",
+    "mysql": "^2.18.1",
+    "request": "^2.88.2",
+    "require": "^2.4.20",
+    "tmi.js": "^1.7.1"
+  }
+}
