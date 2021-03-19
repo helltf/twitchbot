@@ -33,19 +33,6 @@ const insert = (database,keys,values) =>{
       })
     })
 }
-const query = (command) =>{
-  return new Promise((resolve,reject)=>{
-    twitchdatabase.query(command,(err,result)=>{
-      if(err)console.log(err);
-
-      if(result.length!=0){
-        resolve(result)
-      }else{
-        resolve(undefined)
-      }
-    })
-  })
-}
 /**
  * SELECT keys FROM table 
  * @param {*} keys Return values
@@ -125,20 +112,49 @@ const remove = (table,where,value) =>{
   return new Promise((resolve,reject)=>{
     twitchdatabase.query(command,(err,result)=>{
       if(err)console.log(err);
-      if(result.length!=0){
         resolve(result)
-      }else{
-        resolve(undefined)
-      }
     })
   })
 }
-
+/**
+ * SELECT keys FROM table JOIN jointable ON jointablevalue WHERE where = wherevalue
+ * @param {*} keys 
+ * @param {*} table 
+ * @param {*} jointable 
+ * @param {*} tablevalue 
+ * @param {*} jointablevalue 
+ * @param {*} where 
+ * @param {*} wherevalue 
+ * @returns 
+ */
+const selectJoin = (keys,table,jointable,tablevalue,jointablevalue,where,wherevalue)=>{
+  let command = `SELECT ${keys} FROM ${table} JOIN ${jointable} ON ${tablevalue}=${jointablevalue} WHERE ${where} = '${wherevalue}'` 
+  return new Promise((resolve,reject)=>{
+  twitchdatabase.query(command,(err,result)=>{
+    if(err)console.log(err);
+    if(result.length!=0){
+      resolve(result)
+    }else{
+      resolve(undefined)
+    }
+  })
+})
+}
+const custom= (command)=>{
+  command = command.replace(/\n/g,"")
+  return new Promise((resolve,reject)=>{
+  twitchdatabase.query(command,(err,result)=>{
+    if(err)console.log(err)
+    resolve(result)
+  })
+})
+}
 module.exports.remove=remove;
 module.exports.updateWhereMultipleSets=updateWhereMultipleSets;
 module.exports.select=select
 module.exports.selectWhere=selectWhere
 module.exports.updateWhere=updateWhere;
 module.exports.connect=connect;
-module.exports.query=query;
 module.exports.insert=insert;
+module.exports.selectJoin=selectJoin;
+module.exports.custom=custom;
