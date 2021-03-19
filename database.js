@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 const chalk = require("chalk")
 require('dotenv').config();
-const con = mysql.createConnection({
+const twitchdatabase = mysql.createConnection({
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
@@ -9,7 +9,7 @@ const con = mysql.createConnection({
 });
 
 const connect = ()=>{
-  con.connect(function(err) {
+  twitchdatabase.connect(function(err) {
     if (err){
       console.log(`${chalk.hex("#3f888f").bold("[DATABASE]")} ${chalk.gray("[CONNECTION]")} ${chalk.red("[NOT SUCCESSFUL]")}`);
       throw err;
@@ -27,19 +27,15 @@ const connect = ()=>{
 const insert = (database,keys,values) =>{
   let command = `INSERT INTO ${database} (${keys}) VALUES (${values})`
     return new Promise((resolve,reject)=>{
-      con.query(command,(err,result)=>{
+      twitchdatabase.query(command,(err,result)=>{
         if(err)console.log(err);
-        if(result.length!=0){
-          resolve(result)
-        }else{
-          resolve(undefined)
-        }
+        resolve(result);
       })
     })
 }
 const query = (command) =>{
   return new Promise((resolve,reject)=>{
-    con.query(command,(err,result)=>{
+    twitchdatabase.query(command,(err,result)=>{
       if(err)console.log(err);
 
       if(result.length!=0){
@@ -59,7 +55,7 @@ const query = (command) =>{
 const select = (keys,table)=>{
   let command = `SELECT ${keys} FROM ${table}`
   return new Promise((resolve,reject)=>{
-    con.query(command,(err,result)=>{
+    twitchdatabase.query(command,(err,result)=>{
       if(err)console.log(err);
       if(result.length!=0){
         resolve(result)
@@ -80,7 +76,7 @@ const select = (keys,table)=>{
 const selectWhere = (keys,table,where,value)=>{
   let command = `SELECT ${keys} FROM ${table} WHERE ${where} = '${value}'`
   return new Promise((resolve,reject)=>{
-    con.query(command,(err,result)=>{
+    twitchdatabase.query(command,(err,result)=>{
       if(err)console.log(err);
       if(result.length!=0){
         resolve(result)
@@ -101,7 +97,7 @@ const selectWhere = (keys,table,where,value)=>{
 const updateWhere = (table,set,setvalue,where,value)=>{
   let command= `UPDATE ${table} SET ${set} ='${setvalue}' WHERE ${where} = '${value}'`;
   return new Promise((resolve,reject)=>{
-    con.query(command,(err,result)=>{
+    twitchdatabase.query(command,(err,result)=>{
       if(err)console.log(err);
       if(result.length!=0){
         resolve(result)
@@ -114,7 +110,7 @@ const updateWhere = (table,set,setvalue,where,value)=>{
 const updateWhereMultipleSets = (table,set,where,value)=>{
   let command= `UPDATE ${table} SET ${set} WHERE ${where} = '${value}'`;
   return new Promise((resolve,reject)=>{
-    con.query(command,(err,result)=>{
+    twitchdatabase.query(command,(err,result)=>{
       if(err)console.log(err);
       if(result.length!=0){
         resolve(result)
@@ -127,7 +123,7 @@ const updateWhereMultipleSets = (table,set,where,value)=>{
 const remove = (table,where,value) =>{
   let command= `DELETE FROM ${table} WHERE ${where} = '${value}'`;
   return new Promise((resolve,reject)=>{
-    con.query(command,(err,result)=>{
+    twitchdatabase.query(command,(err,result)=>{
       if(err)console.log(err);
       if(result.length!=0){
         resolve(result)
@@ -137,6 +133,7 @@ const remove = (table,where,value) =>{
     })
   })
 }
+
 module.exports.remove=remove;
 module.exports.updateWhereMultipleSets=updateWhereMultipleSets;
 module.exports.select=select
