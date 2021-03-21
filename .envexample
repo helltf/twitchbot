@@ -4,3 +4,4 @@ PASSWORD =<password>
 DATABASE =<databasename>
 CLIENT_ID=<your client_id>
 CLIENT_SECRET=<your client_secret>
+BEARERTOKEN_STREAMELEMENTS=<your streamelements bearer>
