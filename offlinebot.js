@@ -40,3 +40,6 @@ const updateChannels= async ()=>{
 }
 
 var emoteJSON={}
+
+let runningRpsGames=[]
+module.exports.runningRpsGames=runningRpsGames;
