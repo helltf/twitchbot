@@ -4,4 +4,5 @@ PASSWORD =<password>
 DATABASE =<databasename>
 CLIENT_ID=<your client_id>
 CLIENT_SECRET=<your client_secret>
+IS_RASPI=<true if client is allowed to insert into database>
 BEARERTOKEN_STREAMELEMENTS=<your streamelements bearer>
