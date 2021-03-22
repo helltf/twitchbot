@@ -43,3 +43,4 @@ var emoteJSON={}
 
 let runningRpsGames=[]
 module.exports.runningRpsGames=runningRpsGames;
+database.custom("DELETE FROM TIMEOUT_USER WHERE DURATION < 180")

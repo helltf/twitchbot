@@ -25,6 +25,7 @@ const connect = ()=>{
  * @returns 
  */
 const insert = (database,keys,values) =>{
+  if(!process.env.IS_RASPI)return;
   let command = `INSERT INTO ${database} (${keys}) VALUES (${values})`
     return new Promise((resolve,reject)=>{
       twitchdatabase.query(command,(err,result)=>{
@@ -82,6 +83,7 @@ const selectWhere = (keys,table,where,value)=>{
  * @param {*} value 
  */
 const updateWhere = (table,set,setvalue,where,value)=>{
+  if(!process.env.IS_RASPI)return;
   let command= `UPDATE ${table} SET ${set} ='${setvalue}' WHERE ${where} = '${value}'`;
   return new Promise((resolve,reject)=>{
     twitchdatabase.query(command,(err,result)=>{
@@ -95,6 +97,7 @@ const updateWhere = (table,set,setvalue,where,value)=>{
   })
 }
 const updateWhereMultipleSets = (table,set,where,value)=>{
+  if(!process.env.IS_RASPI)return;
   let command= `UPDATE ${table} SET ${set} WHERE ${where} = '${value}'`;
   return new Promise((resolve,reject)=>{
     twitchdatabase.query(command,(err,result)=>{
@@ -144,8 +147,11 @@ const custom= (command)=>{
   command = command.replace(/\n/g,"")
   return new Promise((resolve,reject)=>{
   twitchdatabase.query(command,(err,result)=>{
-    if(err)console.log(err)
-    resolve(result)
+    if(result.length!=0){
+      resolve(result)
+    }else{
+      resolve(undefined)
+    }
   })
 })
 }
