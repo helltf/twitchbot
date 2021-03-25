@@ -1,7 +1,7 @@
 # COMMANDS
 All available Commands:
 
-| COMMAND| REQUIRED PERMISSIONS| REQUIRED PARAMETERS |OPTIONAL PARAMETERS|DESCRIPTION
+| COMMAND | REQUIRED PERMISSIONS | REQUIRED PARAMETERS | OPTIONAL PARAMETERS | DESCRIPTION
 | ---:|:---:| :---:|:---:|:---:|:---:|
 COMMANDINFO | 1 | 1 | none | Gives you an info about the given command
 ALLOWMESSAGES | 2 | 2 | none | Used to allow messages send by the bot in the current channel
