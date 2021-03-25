@@ -14,8 +14,8 @@ DISABLEMESSAGES | 2 | 2 | none | Used to disallow messages send by the bot in th
 EMOTEGAME | 1 | 1 | none | Starts a game of hangman with thirdparty emotes
 EMOTEGAMESTATS | 1 | 1 | username | Provides your stats for emotegames
 JOIN | 3 | 3 | none | Used to make the mainclient join a new channel
-LASTBAN | 1 | 1 | none | Searches for the last ban occured in the given channel
-LASTTIMEOUT | 1 | 1 | none | Searches for the last timeout occured in the given channel. Only tracks timeouts longer than 300s
+LASTBAN | 1 | 1 | channel | Searches for the last ban occured in the given channel
+LASTTIMEOUT | 1 | 1 | channel | Searches for the last timeout occured in the given channel. Only tracks timeouts longer than 300s
 LEAVE | 3 | 3 | none | Used to make the mainclient leave a channel
 LYRICS | 1 | 1 | none | Retrieves the lyrics for a given song
 PING | 1 | 1 | none | Just a Ping command 4Head

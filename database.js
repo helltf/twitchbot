@@ -145,9 +145,15 @@ const selectJoin = (keys,table,jointable,tablevalue,jointablevalue,where,whereva
 }
 const custom= (command)=>{
   command = command.replace(/\n/g,"")
+  console.log(command)
   return new Promise((resolve,reject)=>{
   twitchdatabase.query(command,(err,result)=>{
-    resolve(result)
+    if(err)reject(err)
+    if(result.length!=0){
+      resolve(result)
+    }else{
+      resolve(undefined)
+    }
   })
 })
 }
