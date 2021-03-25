@@ -1,9 +1,8 @@
 const database = require('./database');
 database.connect();
-const client = require('./lib/client.js');
-const watchclient = require("./lib/watchclient");
+require('./lib/client.js');
+equire("./lib/watchclient");
 require('dotenv').config();
-const got = require('got')
 const updatecmd = require("./lib/functions/updateCommandsDatabase")
 require("./lib/gamehandler/rpsgamehandler")
 require("./lib/gamehandler/emotegamehandler")
