@@ -147,11 +147,7 @@ const custom= (command)=>{
   command = command.replace(/\n/g,"")
   return new Promise((resolve,reject)=>{
   twitchdatabase.query(command,(err,result)=>{
-    if(result.length!=0){
-      resolve(result)
-    }else{
-      resolve(undefined)
-    }
+    resolve(result)
   })
 })
 }

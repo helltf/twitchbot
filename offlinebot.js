@@ -9,6 +9,5 @@ require("./lib/gamehandler/rpsgamehandler")
 require("./lib/gamehandler/emotegamehandler")
 require("./lib/functions/runningrpsgames")
 require("./lib/functions/runningEmoteGames")
+require("./lib/functions/updateReadMe")
 updatecmd();
-
-var emoteJSON={}
