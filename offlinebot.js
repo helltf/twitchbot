@@ -1,7 +1,7 @@
 const database = require('./database');
 database.connect();
 require('./lib/client.js');
-equire("./lib/watchclient");
+require("./lib/watchclient");
 require('dotenv').config();
 const updatecmd = require("./lib/functions/updateCommandsDatabase")
 require("./lib/gamehandler/rpsgamehandler")
