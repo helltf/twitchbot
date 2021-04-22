@@ -5,6 +5,7 @@ All available Commands:
 | :---:|:---:| :---:|:---:|:---:|
 ALLOWMESSAGES | 2 | none | none | Used to allow messages send by the bot in the current channel
 BANSEARCH | 1 | user | channel | Searches for the last ban for a certain user
+BANSTATS | 1 | none | user | Returnes the counter for bans tracked
 BOTINFO | 1 | none | none | Gives an info about the bot
 CHANNELINFO | 1 | none | none | Retrieves the currents stats about the channel
 COLORHISTORY | 1 | none | none | The bot will send a message containing your 10 latest colorchanges and the time between your latest change and now
@@ -18,9 +19,11 @@ LASTBAN | 1 | none | channel | Searches for the last ban occured in the given ch
 LASTTIMEOUT | 1 | none | channel | Searches for the last timeout occured in the given channel. Only tracks timeouts longer than 300s
 LEAVE | 3 | channel | none | Used to make the mainclient leave a channel
 LYRICS | 1 | song and creator | none | Retrieves the lyrics for a given song
+NOTIFY | 1 | streamer event | none | Enables notifications for a given streamern on an certain event. Right usage: hb notify <streamer> <event>. Available events: live/offline/title/game/all
 PING | 1 | none | none | Just a Ping command 4Head
 REGISTER | 1 | none | none | Deprecated, No longer required
 REGISTERCOLOR | 1 | none | none | Used to register yourself for colorhistory. The bot will save your 10 latest colors and the time of your last change
+REMOVEME | 1 | streamer event | none | Disables notifications for a given streamern on an certain event. Right usage: hb notify <streamer> <event>. Available events: live/offline/title/game/all
 RPS | 1 | [rock/paper/scissor] | none | play a game of rock, paper, scissors vs. the bot
 RPSPLAYERGAME | 1 | player | none | Play a game of rps
 RPSSTATS | 1 | none | username | Provides your stats for rps
