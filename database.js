@@ -7,7 +7,14 @@ const twitchdatabase = mysql.createConnection({
   password: process.env.PASSWORD,
   database: process.env.DATABASE
 });
-
+module.exports.updateColorHistoryInDatabase =async (colorHistoryArray,user_id)=>{
+  let command = `UPDATE COLORHISTORY SET COLOR_HIST = '${JSON.stringify(colorHistoryArray)}', LAST_CHANGE='${Date.now()}' WHERE TWITCH_ID = ${user_id}`
+  return await query(command)
+}
+module.exports.getUserInfo=async(username)=>{
+  let command = `SELECT * FROM TWITCH_USER WHERE USERNAME ='${username}'`
+  return await query(command)
+}
 module.exports.connect = ()=>{
   twitchdatabase.connect(function(err) {
     if (err){
@@ -126,6 +133,15 @@ module.exports.addNewChannelForAPIUpdates=async(streamer,currentDate)=>{
   let command = `INSERT INTO CHANNEL_INFO (CHANNEL_NAME,LIVE,TITLE,GAME_ID,NEXT_UPDATE,LIVE_COOLDOWN,TITLE_COOLDOWN,GAME_COOLDOWN) VALUES ('${streamer}','${undefined}','${undefined}','${-1}','${currentDate}','${currentDate}','${currentDate}','${currentDate}')`
   return await query(command)
 }
+module.exports.getNotifyCooldownForKey= async (key,channelname) =>{
+  let command= `SELECT ${key}_COOLDOWN FROM CHANNEL_INFO WHERE CHANNEL_NAME ='${channelname}' `
+  let result = await query(command)
+  return result[0][`${key}_COOLDOWN`]
+}
+module.exports.getNotifedUserForStreamerOnEvent=async(streamer,key)=>{
+  let command = `SELECT * FROM NOTIFY JOIN TWITCH_USER ON NOTIFY.TWITCH_ID=TWITCH_USER.TWITCH_ID WHERE STREAMER = '${streamer}' AND ${key.toUpperCase()} = '1'`
+  return await query(command)
+}
 module.exports.removeNotifyRecordInDatabase=async(user_id,streamer)=>{
   let command = `DELETE FROM NOTIFY WHERE TWITCH_ID='${user_id}' AND STREAMER='${streamer}'`
   return await query(command)
@@ -139,7 +155,7 @@ module.exports.addNewTimeout=async(username,channel,duration)=>{
   return await query(command)
 }
 module.exports.removeWatchChannel=async(channel)=>{
-  let command = `DELETE FROM WATCHCHANNELS WHERE CHANNEL = '${channel}'`
+  let command = `DELETE FROM WATCHCHANNELS WHERE CHANNEL_NAME = '${channel}'`
   return await query(command);
 }
 
@@ -153,7 +169,39 @@ module.exports.updateEventForUser=async(user_id,streamer,status,value)=>{
   let command = `UPDATE NOTIFY SET ${status.toUpperCase()}='${value}' WHERE TWITCH_ID='${user_id}' AND STREAMER ='${streamer}'` 
   return await query(command)
 }
-
+module.exports.addNewRecordToColorHistory=async(user_id,currentColor)=>{
+  let command = `INSERT INTO COLORHISTORY (TWITCH_ID,COLOR_HIST,REGISTER_TIME,LAST_CHANGE) VALUES ('${user_id}','["${user.color}"]','${Date.now()}','${Date.now()}')`
+  return await query(command)
+}
+module.exports.getRPSStatsForUserID=async(user_id)=>{
+  let command  = `SELECT * FROM RPS_STATS JOIN TWITCH_USER ON RPS_STATS.TWITCH_ID = TWITCH_USER.TWITCH_ID WHERE RPS_STATS.TWITCH_ID ='${user_id}'`
+  let stats = await query(command)
+  if(!stats)  return undefined
+  return{
+    wins:stats[0].WIN,
+    losses:stats[0].LOSE,
+    draws:stats[0].DRAW,
+  }
+}
+module.exports.getEmotegameStatsForUserID=async(user_id)=>{
+  let command  = `SELECT * FROM EMOTEGAME_STATS JOIN TWITCH_USER ON EMOTEGAME_STATS.TWITCH_ID = TWITCH_USER.TWITCH_ID WHERE EMOTEGAME_STATS.TWITCH_ID ='${user_id}'`
+  let stats = await query(command)
+  if(!stats)  return undefined
+  return{
+    letters_guessed:stats[0].LETTERS_GUESSED,
+    emotes_guessed:stats[0].EMOTES_GUESSED,
+  }
+}
+module.exports.getLeaderboardPositionRPS= async(user_id)=>{
+  let command = `SELECT * FROM TWITCH_USER JOIN RPS_STATS ON  TWITCH_USER.TWITCH_ID = RPS_STATS.TWITCH_ID ORDER BY RPS_STATS.WIN DESC`
+  let allStats = await query(command)
+  return allStats.findIndex(user=> user.TWITCH_ID===parseInt(user_id))+1
+}
+module.exports.getLeaderboardPositionEmoteGame= async(user_id)=>{
+  let command = `SELECT * FROM TWITCH_USER JOIN EMOTEGAME_STATS ON  TWITCH_USER.TWITCH_ID = EMOTEGAME_STATS.TWITCH_ID ORDER BY EMOTEGAME_STATS.EMOTES_GUESSED DESC`
+  let allStats = await query(command)
+  return allStats.findIndex(user=> user.TWITCH_ID===parseInt(user_id))+1
+}
 const query = (command)=>{
   if(command.search(/^INSERT$|^UPDATE$|^DELETE$/)!=-1&&process.env.IS_RASPI==="false") return
   return new Promise((resolve,reject)=>{
