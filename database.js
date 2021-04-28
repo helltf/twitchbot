@@ -1,19 +1,39 @@
 var mysql = require('mysql');
 const chalk = require("chalk")
 require('dotenv').config();
+
 const twitchdatabase = mysql.createConnection({
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE
 });
+module.exports.getConnectedChannels=async()=>{
+  let command = `SELECT * FROM CHANNELS WHERE CURR_CONNECTED='1'`
+  return await query(command)
+}
+module.exports.getAllWatchChannels=async()=>{
+  let comand = `SELECT * FROM WATCHCHANNELS`
+  return await query(comand)
+}
+module.exports.setUpdateCooldown=async(channel,cooldown)=>{
+  let command = `UPDATE CHANNEL_INFO SET NEXT_UPDATE ='${Date.now()+cooldown}' WHERE CHANNEL_NAME = '${channelname}'`
+  return await query(command)
+}
 module.exports.updateColorHistoryInDatabase =async (colorHistoryArray,user_id)=>{
   let command = `UPDATE COLORHISTORY SET COLOR_HIST = '${JSON.stringify(colorHistoryArray)}', LAST_CHANGE='${Date.now()}' WHERE TWITCH_ID = ${user_id}`
   return await query(command)
 }
 module.exports.getUserInfo=async(username)=>{
   let command = `SELECT * FROM TWITCH_USER WHERE USERNAME ='${username}'`
-  return await query(command)
+  let user_info =  await query(command)
+  return{
+    username:user_info[0].USERNAME,
+    twitch_id:user_info[0].TWITCH_ID,
+    color:user_info[0].COLOR,
+    permissions:user_info[0].PERMISSIONS,
+    register_time:user_info[0].REGISTER_TIME
+  }
 }
 module.exports.connect = ()=>{
   twitchdatabase.connect(function(err) {
@@ -147,7 +167,7 @@ module.exports.removeNotifyRecordInDatabase=async(user_id,streamer)=>{
   return await query(command)
 }
 module.exports.addNewWatchChannel=async(channel)=>{
-  let command = `INSERT INTO WATCHCHANNELS (CHANNELNAME) VALUES ('${channel}')`
+  let command = `INSERT INTO WATCHCHANNELS (CHANNEL_NAME) VALUES ('${channel}')`
   return await query(command)
 }
 module.exports.addNewTimeout=async(username,channel,duration)=>{
