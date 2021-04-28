@@ -9,15 +9,14 @@ requiredir("./lib/gamehandler")
 const livestatus = require("./lib/notify/updatelivestatus")
 const ATupdater = require("./lib/functions/ATHandler").updateAT
 const updatecmd = require("./lib/functions/updateCommandsDatabase")
-const storeColor = require("./lib/functions/functions").storeColor
 const start = async()=>{
     updatecmd();
-
+    
     await ATupdater()
 
    await livestatus.init()
 
-    //setInterval(livestatus.update,1000)
+    //setInterval(livestatus.update,5000)
     
     setInterval(ATupdater,3300000)
 }
