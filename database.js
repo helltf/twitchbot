@@ -25,7 +25,7 @@ module.exports.getAllWatchChannels=async()=>{
   return await query(comand)
 }
 module.exports.setUpdateCooldown=async(channel,cooldown)=>{
-  let command = `UPDATE CHANNEL_INFO SET NEXT_UPDATE ='${Date.now()+cooldown}' WHERE CHANNEL_NAME = '${channelname}'`
+  let command = `UPDATE CHANNEL_INFO SET NEXT_UPDATE ='${Date.now()+cooldown}' WHERE CHANNEL_NAME = '${channel}'`
   return await query(command)
 }
 module.exports.updateColorHistoryInDatabase =async (colorHistoryArray,user_id)=>{
