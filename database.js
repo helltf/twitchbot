@@ -166,6 +166,14 @@ module.exports.removeNotifyRecordInDatabase=async(user_id,streamer)=>{
   let command = `DELETE FROM NOTIFY WHERE TWITCH_ID='${user_id}' AND STREAMER='${streamer}'`
   return await query(command)
 }
+module.exports.getBansForChannel=async(channel)=>{
+  let command = `SELECT * FROM BANNED_USER WHERE CHANNEL= '${channel}' ORDER BY TIME DESC`
+  return await query(command)
+}
+module.exports.getTimeoutsForChannel=async(channel)=>{
+  let command = `SELECT * FROM TIMEOUT_USER WHERE CHANNEL= '${channel}' ORDER BY TIME DESC`
+  return await query(command)
+}
 module.exports.addNewWatchChannel=async(channel)=>{
   let command = `INSERT INTO WATCHCHANNELS (CHANNEL_NAME) VALUES ('${channel}')`
   return await query(command)
