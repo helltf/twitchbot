@@ -10,13 +10,13 @@ const livestatus = require("./lib/notify/updatelivestatus")
 const ATupdater = require("./lib/functions/ATHandler").updateAT
 const updatecmd = require("./lib/functions/updateCommandsDatabase")
 const start = async()=>{
-    updatecmd();
-    
+    updatecmd();    
+
     await ATupdater()
 
    await livestatus.init()
 
-    //setInterval(livestatus.update,5000)
+    setInterval(livestatus.update,5000)
     
     setInterval(ATupdater,3300000)
 }
