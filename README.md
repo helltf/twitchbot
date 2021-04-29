@@ -19,6 +19,7 @@ LASTBAN | 1 | none | channel | Searches for the last ban occured in the given ch
 LASTTIMEOUT | 1 | none | channel | Searches for the last timeout occured in the given channel. Only tracks timeouts longer than 300s
 LEAVE | 3 | channel | none | Used to make the mainclient leave a channel
 LYRICS | 1 | song and creator | none | Retrieves the lyrics for a given song
+MOVENOTIFY | 0 | streamer channel | none | Moves your notifications to another channel
 NOTIFY | 1 | streamer event | none | Enables notifications for a given streamern on an certain event. Right usage: hb notify <streamer> <event>. Available events: live/offline/title/game/all
 PING | 1 | none | none | Just a Ping command 4Head
 REGISTER | 1 | none | none | Deprecated, No longer required
