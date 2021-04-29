@@ -34,7 +34,7 @@ module.exports.updateColorHistoryInDatabase =async (colorHistoryArray,user_id)=>
 }
 module.exports.getUserInfo=async(username)=>{
   let command = `SELECT * FROM TWITCH_USER WHERE USERNAME ='${username}'`
-  let user_info =  await query(command)
+  let user_info =  await query(command)  
   return{
     username:user_info[0].USERNAME,
     twitch_id:user_info[0].TWITCH_ID,
@@ -206,7 +206,7 @@ module.exports.updateEventForUser=async(user_id,streamer,status,value)=>{
   return await query(command)
 }
 module.exports.addNewRecordToColorHistory=async(user_id,currentColor)=>{
-  let command = `INSERT INTO COLORHISTORY (TWITCH_ID,COLOR_HIST,REGISTER_TIME,LAST_CHANGE) VALUES ('${user_id}','["${user.color}"]','${Date.now()}','${Date.now()}')`
+  let command = `INSERT INTO COLORHISTORY (TWITCH_ID,COLOR_HIST,REGISTER_TIME,LAST_CHANGE) VALUES ('${user_id}','["${currentColor}"]','${Date.now()}','${Date.now()}')`
   return await query(command)
 }
 module.exports.getRPSStatsForUserID=async(user_id)=>{
