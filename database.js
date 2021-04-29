@@ -29,7 +29,7 @@ module.exports.setUpdateCooldown=async(channel,cooldown)=>{
   return await query(command)
 }
 module.exports.updateColorHistoryInDatabase =async (colorHistoryArray,user_id)=>{
-  let command = `UPDATE COLORHISTORY SET COLOR_HIST = '${JSON.stringify(colorHistoryArray)}', LAST_CHANGE='${Date.now()}' WHERE TWITCH_ID = ${user_id}`
+  let command = `UPDATE COLOR_HISTORY SET COLOR_HIST = '${JSON.stringify(colorHistoryArray)}', LAST_CHANGE='${Date.now()}' WHERE TWITCH_ID = ${user_id}`
   return await query(command)
 }
 module.exports.getUserInfo=async(username)=>{
