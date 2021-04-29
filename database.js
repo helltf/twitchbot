@@ -12,6 +12,14 @@ module.exports.getConnectedChannels=async()=>{
   let command = `SELECT * FROM CHANNELS WHERE CURR_CONNECTED='1'`
   return await query(command)
 }
+module.exports.getConnectedChannel=async(channel)=>{
+  let command = `SELECT * FROM CHANNELS WHERE CURR_CONNECTED='1' AND CHANNEL_NAME ='${channel}'`
+  return await query(command)
+}
+module.exports.updateNotifyChannelForUser=async(user_id,newChannel,streamer)=>{
+  let command = `UPDATE NOTIFY SET CHANNEL='${newChannel}' WHERE TWITCH_ID = '${user_id}'AND STREAMER = '${streamer}'`
+  return await query(command)
+}
 module.exports.getAllWatchChannels=async()=>{
   let comand = `SELECT * FROM WATCHCHANNELS`
   return await query(comand)
