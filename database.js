@@ -24,6 +24,10 @@ module.exports.getAllWatchChannels=async()=>{
   let comand = `SELECT * FROM WATCHCHANNELS`
   return await query(comand)
 }
+module.exports.isWatchChannel=async(channel)=>{
+  let command = `SELECT * FROM WATCHCHANNELS WHERE CHANNEL_NAME ='${channel}'`
+  return await query(command)
+}
 module.exports.setUpdateCooldown=async(channel,cooldown)=>{
   let command = `UPDATE CHANNEL_INFO SET NEXT_UPDATE ='${Date.now()+cooldown}' WHERE CHANNEL_NAME = '${channel}'`
   return await query(command)
