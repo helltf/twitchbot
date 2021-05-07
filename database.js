@@ -8,6 +8,21 @@ const twitchdatabase = mysql.createConnection({
   password: process.env.PASSWORD,
   database: process.env.DATABASE
 });
+module.exports.deleteCommand=async(commandname)=>{
+  let command = `DELETE FROM COMMANDS WHERE NAME = '${commandname}'` 
+  console.log(`${chalk.hex("#A0522D").bold("[COMMAND]")} ${chalk.red("[REMOVED]")} ${chalk.yellow(`[${commandname.toUpperCase()}]`)}`)
+  return await query(command)
+}
+module.exports.getCommands=async()=>{
+  let command = `SELECT * FROM COMMANDS`
+  return await query(command)
+}
+module.exports.getPermissionsForUser=async(user_id)=>{
+  let command = `SELECT PERMISSIONS FROM TWITCH_USER WHERE TWITCH_ID='${user_id}'`
+  let result = await query(command)
+  if(result) return result[0].PERMISSIONS 
+  return undefined
+}
 module.exports.getConnectedChannels=async()=>{
   let command = `SELECT * FROM CHANNELS WHERE CURR_CONNECTED='1'`
   return await query(command)
@@ -46,6 +61,16 @@ module.exports.getUserInfo=async(username)=>{
     permissions:user_info[0].PERMISSIONS,
     register_time:user_info[0].REGISTER_TIME
   }
+}
+module.exports.updateCommandValue=async(commandname,newvalue,key)=>{
+let command = `UPDATE COMMANDS SET ${key.toUpperCase()}='${newvalue}' WHERE NAME='${commandname}'`
+console.log(`${chalk.hex("#A0522D").bold("[COMMAND]")} ${chalk.hex("#3f888f").bold("[UPDATED]")} ${chalk.yellow(`[${commandname.toUpperCase()}]`)}`)
+return await query(command)
+}
+module.exports.addNewCommand=async(commandname,commandinfo)=>{
+  let command = `INSERT INTO COMMANDS (NAME,COUNTER,REQUIRED_PERMISSIONS,DESCRIPTION,REQUIRED_PARAMETERS,OPTIONAL_PARAMETERS) VALUES ('${commandname.toUpperCase()}','0','${commandinfo.required_permissions}','${commandinfo.description}','${commandinfo.required_parameters}','${commandinfo.optional_parameters}')`
+  console.log(`${chalk.hex("#A0522D").bold("[COMMAND]")} ${chalk.hex("#3f888f").bold("[ADDED]")} ${chalk.yellow(`[${commandname.toUpperCase()}]`)}`)
+  return await query(command)
 }
 module.exports.connect = ()=>{
   twitchdatabase.connect(function(err) {
