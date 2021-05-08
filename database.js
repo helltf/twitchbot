@@ -8,14 +8,37 @@ const twitchdatabase = mysql.createConnection({
   password: process.env.PASSWORD,
   database: process.env.DATABASE
 });
+module.exports.setPermissionsForUser=async (username,permissionlvl) =>{
+  let command = `UPDATE TWITCH_USER SET PERMISSIONS ='${permissionlvl}' WHERE USERNAME ='${username}'`
+  return await query(command)
+}
+module.exports.incrementCommandCounter = async(command)=>{
+  let command = `SELECT COUNTER FROM COMMANDS WHERE NAME='${command}'`
+  let response = await query(command)
+  let count = response[0].COUNTER
+  command = `UPDATE COMMANDS SET COUNTER='${count+1}' WHERE NAME ='${command}'`
+  return await query(command)
+}
 module.exports.deleteCommand=async(commandname)=>{
   let command = `DELETE FROM COMMANDS WHERE NAME = '${commandname}'` 
   console.log(`${chalk.hex("#A0522D").bold("[COMMAND]")} ${chalk.red("[REMOVED]")} ${chalk.yellow(`[${commandname.toUpperCase()}]`)}`)
   return await query(command)
 }
+module.exports.addNewUser=async(user)=>{
+  let command = `INSERT INTO TWITCH_USER (USERNAME, TWITCH_ID, COLOR,PERMISSIONS,REGISTER_TIME) VALUES ('${user.username}', '${user["user-id"]}', '${user.color}','1','${Date.now()}')`
+  return await query(command)
+}
+module.exports.userIsRegisteredForColorHistory=(user_id)=>{
+  let command = `SELECT TWITCH_ID FROM COLOR_HISTORY WHERE TWITCH_ID = '${user_id}'`
+  return await query(command)!=undefined
+}
 module.exports.getCommands=async()=>{
   let command = `SELECT * FROM COMMANDS`
   return await query(command)
+}
+module.exports.isUserRegistered=(user_id)=>{
+  let command = `SELECT TWITCH_ID FROM TWITCH_USER WHERE TWITCH_ID ='${user_id}'`
+  return await query(command)!=undefined
 }
 module.exports.getPermissionsForUser=async(user_id)=>{
   let command = `SELECT PERMISSIONS FROM TWITCH_USER WHERE TWITCH_ID='${user_id}'`
@@ -47,10 +70,15 @@ module.exports.setUpdateCooldown=async(channel,cooldown)=>{
   let command = `UPDATE CHANNEL_INFO SET NEXT_UPDATE ='${Date.now()+cooldown}' WHERE CHANNEL_NAME = '${channel}'`
   return await query(command)
 }
-module.exports.updateColorHistoryInDatabase =async (colorHistoryArray,user_id)=>{
-  let command = `UPDATE COLOR_HISTORY SET COLOR_HIST = '${JSON.stringify(colorHistoryArray)}', LAST_CHANGE='${Date.now()}' WHERE TWITCH_ID = ${user_id}`
+module.exports.updateColorHistoryInDatabase =async (colorArray,user_id)=>{
+  let command = `UPDATE COLOR_HISTORY SET COLOR_HIST = '${JSON.stringify(colorArray)}', LAST_CHANGE='${Date.now()}' WHERE TWITCH_ID = ${user_id}`
   return await query(command)
 }
+module.exports.updateColor=async(user_id,color)=>{
+  let command = `UPDATE TWITCH_USER SET COLOR='${color}' WHERE TWITCH_ID = '${user_id}'`
+  return await query(command)
+}
+
 module.exports.getUserInfo=async(username)=>{
   let command = `SELECT * FROM TWITCH_USER WHERE USERNAME ='${username}'`
   let user_info =  await query(command)  
@@ -81,70 +109,32 @@ module.exports.connect = ()=>{
     console.log(`${chalk.hex("#3f888f").bold("[DATABASE]")} ${chalk.gray("[CONNECTION]")} ${chalk.green("[SUCCESSFUL]")}`);
   });
 }
-/**
- * INSERT INTO database (keys) VALUES (values)
- * @param {*} database 
- * @param {*} keys 
- * @param {*} values 
- * @returns 
- */
+
 module.exports.insert = async(database,keys,values) =>{
   let command = `INSERT INTO ${database} (${keys}) VALUES (${values})`
 return await query(command)
 }
-/**
- * SELECT keys FROM table 
- * @param {*} keys Return values
- * @param {*} table Databasetable
- * @returns the result of the query
- */
+
  module.exports.select = async(keys,table)=>{
   let command = `SELECT ${keys} FROM ${table}`
 return await query(command)
 }
-/**
- * SELECT keys FROM table WHERE where = 'value'
- * @param {*} keys Return values
- * @param {*} table Databasetable
- * @param {*} where key
- * @param {*} value value of the key
- * @returns the result of the query
- */
+
  module.exports.selectWhere=selectWhere= async(keys,table,where,value)=>{
   let command = `SELECT ${keys} FROM ${table} WHERE ${where} = '${value}'`
 return await query(command)
 }
-/**
- * UPDATE table SET set ='setvalue' WHERE where = 'value'
- * @param {*} table 
- * @param {*} set 
- * @param {*} setvalue 
- * @param {*} where 
- * @param {*} value 
- */
+
  module.exports.updateWhere =async (table,set,setvalue,where,value)=>{
   let command= `UPDATE ${table} SET ${set} ='${setvalue}' WHERE ${where} = '${value}'`;
 return await query(command)
 }
-/**
- * UPDATE table set WHERE where value
- * @param {*} table 
- * @param {*} set 
- * @param {*} where 
- * @param {*} value 
- * @returns 
- */
+
  module.exports.updateWhereMultipleSets=async (table,set,where,value)=>{
   let command= `UPDATE ${table} SET ${set} WHERE ${where} = '${value}'`;
 return await query(command)
 }
-/**
- * DELETE FROM tabel WHERE where = value
- * @param {*} table 
- * @param {*} where 
- * @param {*} value 
- * @returns 
- */
+
 module.exports.remove = async(table,where,value) =>{
   let command= `DELETE FROM ${table} WHERE ${where} = '${value}'`;
   return new Promise((resolve,reject)=>{
@@ -154,17 +144,7 @@ module.exports.remove = async(table,where,value) =>{
     })
   })
 }
-/**
- * SELECT keys FROM table JOIN jointable ON jointablevalue WHERE where = wherevalue
- * @param {*} keys 
- * @param {*} table 
- * @param {*} jointable 
- * @param {*} tablevalue 
- * @param {*} jointablevalue 
- * @param {*} where 
- * @param {*} wherevalue 
- * @returns 
- */
+
  module.exports.selectJoin=async (keys,table,jointable,tablevalue,jointablevalue,where,wherevalue)=>{
   let command = `SELECT ${keys} FROM ${table} JOIN ${jointable} ON ${tablevalue}=${jointablevalue} WHERE ${where} = '${wherevalue}'` 
   return await query(command)
