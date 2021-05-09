@@ -18,7 +18,7 @@ const testdatabase = mysql.createConnection({
 
 module.exports.connect =(ENVIRONMENT)=>{
   return new Promise((resolve,reject)=>{
-    if(ENVIRONMENT!=test){
+    if(ENVIRONMENT!="test"){
       twitchdatabase.connect(function(err) {
         if (err){
           console.log(`${chalk.hex("#3f888f").bold("[DATABASE]")} ${chalk.gray("[CONNECTION]")} ${chalk.red("[NOT SUCCESSFUL]")}`);
