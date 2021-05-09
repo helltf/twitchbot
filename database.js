@@ -8,6 +8,38 @@ const twitchdatabase = mysql.createConnection({
   password: process.env.PASSWORD,
   database: process.env.DATABASE
 });
+
+const testdatabase = mysql.createConnection({
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.TESTDATABASE
+});
+
+module.exports.connect =(ENVIRONMENT)=>{
+  return new Promise((resolve,reject)=>{
+    if(ENVIRONMENT!=test){
+      twitchdatabase.connect(function(err) {
+        if (err){
+          console.log(`${chalk.hex("#3f888f").bold("[DATABASE]")} ${chalk.gray("[CONNECTION]")} ${chalk.red("[NOT SUCCESSFUL]")}`);
+          reject(err)
+        } 
+        resolve()
+        console.log(`${chalk.hex("#3f888f").bold("[DATABASE]")} ${chalk.gray("[CONNECTION]")} ${chalk.green("[SUCCESSFUL]")}`);
+      });
+    }else{
+      testdatabase.connect(function(err) {
+        if (err){
+          console.log(`${chalk.hex("#3f888f").bold("[DATABASE]")} ${chalk.gray("[CONNECTION]")} ${chalk.red("[NOT SUCCESSFUL]")}`);
+          reject(err)
+        } 
+        resolve()
+        console.log(`${chalk.hex("#3f888f").bold("[TESTDATABASE]")} ${chalk.gray("[CONNECTION]")} ${chalk.green("[SUCCESSFUL]")}`);
+      });
+    }
+  })
+}
+
 module.exports.setPermissionsForUser=async (username,permissionlvl) =>{
   let command = `UPDATE TWITCH_USER SET PERMISSIONS ='${permissionlvl}' WHERE USERNAME ='${username}'`
   return await query(command)
@@ -82,6 +114,7 @@ module.exports.updateColor=async(user_id,color)=>{
 module.exports.getUserInfo=async(username)=>{
   let command = `SELECT * FROM TWITCH_USER WHERE USERNAME ='${username}'`
   let user_info =  await query(command)  
+  if(user_info===undefined) return undefined
   return{
     username:user_info[0].USERNAME,
     twitch_id:user_info[0].TWITCH_ID,
@@ -100,16 +133,6 @@ module.exports.addNewCommand=async(commandname,commandinfo)=>{
   console.log(`${chalk.hex("#A0522D").bold("[COMMAND]")} ${chalk.hex("#3f888f").bold("[ADDED]")} ${chalk.yellow(`[${commandname.toUpperCase()}]`)}`)
   return await query(command)
 }
-module.exports.connect = ()=>{
-  twitchdatabase.connect(function(err) {
-    if (err){
-      console.log(`${chalk.hex("#3f888f").bold("[DATABASE]")} ${chalk.gray("[CONNECTION]")} ${chalk.red("[NOT SUCCESSFUL]")}`);
-      throw err;
-    } 
-    console.log(`${chalk.hex("#3f888f").bold("[DATABASE]")} ${chalk.gray("[CONNECTION]")} ${chalk.green("[SUCCESSFUL]")}`);
-  });
-}
-
 module.exports.insert = async(database,keys,values) =>{
   let command = `INSERT INTO ${database} (${keys}) VALUES (${values})`
 return await query(command)
@@ -230,7 +253,7 @@ module.exports.getRPSStatsForUserID=async(user_id)=>{
 }
 module.exports.getEmotegameStatsForUserID=async(user_id)=>{
   let command  = `SELECT * FROM EMOTEGAME_STATS JOIN TWITCH_USER ON EMOTEGAME_STATS.TWITCH_ID = TWITCH_USER.TWITCH_ID WHERE EMOTEGAME_STATS.TWITCH_ID ='${user_id}'`
-  if(await query(command===undefined))return undefined
+  if(await query(command)===undefined)return undefined
   let [{LETTERS_GUESSED,EMOTES_GUESSED}] = await query(command)
   return{
     letters_guessed:LETTERS_GUESSED,
@@ -250,16 +273,30 @@ module.exports.getLeaderboardPositionEmoteGame= async(user_id)=>{
 const query = (command)=>{
   if(command.search(/^INSERT$|^UPDATE$|^DELETE$/)!=-1&&process.env.IS_RASPI==="false") return
   return new Promise((resolve,reject)=>{
-    twitchdatabase.query(command,(error,result)=>{
-      if(error){
-        console.log(error)
-        reject(error)
-      }
-      if(result.length!=0){
-        resolve(result)
-      }else{
-        resolve(undefined)
-      }
-    })
+    if(process.env.ENVIRONMENT==="test"){
+      testdatabase.query(command,(error,result)=>{
+        if(error){
+          console.log(error)
+          reject(error)
+        }
+        if(result.length!=0){
+          resolve(result)
+        }else{
+          resolve(undefined)
+        }
+      })
+    }else{
+      twitchdatabase.query(command,(error,result)=>{
+        if(error){
+          console.log(error)
+          reject(error)
+        }
+        if(result.length!=0){
+          resolve(result)
+        }else{
+          resolve(undefined)
+        }
+      })
+    }
   })
 }
