@@ -12,11 +12,11 @@ module.exports.setPermissionsForUser=async (username,permissionlvl) =>{
   let command = `UPDATE TWITCH_USER SET PERMISSIONS ='${permissionlvl}' WHERE USERNAME ='${username}'`
   return await query(command)
 }
-module.exports.incrementCommandCounter = async(command)=>{
-  let command = `SELECT COUNTER FROM COMMANDS WHERE NAME='${command}'`
+module.exports.incrementCommandCounter = async(commandname)=>{
+  let command = `SELECT COUNTER FROM COMMANDS WHERE NAME='${commandname}'`
   let response = await query(command)
   let count = response[0].COUNTER
-  command = `UPDATE COMMANDS SET COUNTER='${count+1}' WHERE NAME ='${command}'`
+  command = `UPDATE COMMANDS SET COUNTER='${count+1}' WHERE NAME ='${commandname}'`
   return await query(command)
 }
 module.exports.deleteCommand=async(commandname)=>{
@@ -28,7 +28,7 @@ module.exports.addNewUser=async(user)=>{
   let command = `INSERT INTO TWITCH_USER (USERNAME, TWITCH_ID, COLOR,PERMISSIONS,REGISTER_TIME) VALUES ('${user.username}', '${user["user-id"]}', '${user.color}','1','${Date.now()}')`
   return await query(command)
 }
-module.exports.userIsRegisteredForColorHistory=(user_id)=>{
+module.exports.userIsRegisteredForColorHistory=async(user_id)=>{
   let command = `SELECT TWITCH_ID FROM COLOR_HISTORY WHERE TWITCH_ID = '${user_id}'`
   return await query(command)!=undefined
 }
@@ -36,7 +36,7 @@ module.exports.getCommands=async()=>{
   let command = `SELECT * FROM COMMANDS`
   return await query(command)
 }
-module.exports.isUserRegistered=(user_id)=>{
+module.exports.isUserRegistered=async(user_id)=>{
   let command = `SELECT TWITCH_ID FROM TWITCH_USER WHERE TWITCH_ID ='${user_id}'`
   return await query(command)!=undefined
 }
