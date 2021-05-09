@@ -229,9 +229,9 @@ module.exports.removeWatchChannel=async(channel)=>{
 
 module.exports.getNotifyEntryForStreamer=async (user_id,streamer)=>{
   let command = `SELECT * FROM NOTIFY WHERE TWITCH_ID='${user_id}' AND STREAMER ='${streamer}'`
+ if(await query(command)===undefined) return undefined
   let [databaseinfo] = await query(command)
-  if(databaseinfo) return databaseinfo
-  return undefined
+  return databaseinfo
 }
 module.exports.updateEventForUser=async(user_id,streamer,status,value)=>{
   let command = `UPDATE NOTIFY SET ${status.toUpperCase()}='${value}' WHERE TWITCH_ID='${user_id}' AND STREAMER ='${streamer}'` 
