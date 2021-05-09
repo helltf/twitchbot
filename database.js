@@ -30,7 +30,7 @@ module.exports.addNewUser=async(user)=>{
 }
 module.exports.userIsRegisteredForColorHistory=async(user_id)=>{
   let command = `SELECT TWITCH_ID FROM COLOR_HISTORY WHERE TWITCH_ID = '${user_id}'`
-  return await query(command)!=undefined
+  return (await query(command)!=undefined)
 }
 module.exports.getCommands=async()=>{
   let command = `SELECT * FROM COMMANDS`
@@ -38,7 +38,7 @@ module.exports.getCommands=async()=>{
 }
 module.exports.isUserRegistered=async(user_id)=>{
   let command = `SELECT TWITCH_ID FROM TWITCH_USER WHERE TWITCH_ID ='${user_id}'`
-  return await query(command)!=undefined
+  return (await query(command)!=undefined)
 }
 module.exports.getPermissionsForUser=async(user_id)=>{
   let command = `SELECT PERMISSIONS FROM TWITCH_USER WHERE TWITCH_ID='${user_id}'`
@@ -160,9 +160,9 @@ module.exports.addNewBan=async(channel,username)=>{
 
 module.exports.getColorForUser=async(user_id)=>{
   let command = `SELECT COLOR FROM TWITCH_USER WHERE TWITCH_ID = '${user_id}'`
-  let databaseColor=await query(command)
-  if(databaseColor){
-    return databaseColor[0].COLOR
+  let [{COLOR}]=await query(command)
+  if(COLOR){
+    return COLOR
   } 
   return undefined 
 }
@@ -172,8 +172,8 @@ module.exports.addNewChannelForAPIUpdates=async(streamer,currentDate)=>{
 }
 module.exports.getNotifyCooldownForKey= async (key,channelname) =>{
   let command= `SELECT ${key}_COOLDOWN FROM CHANNEL_INFO WHERE CHANNEL_NAME ='${channelname}' `
-  let result = await query(command)
-  return result[0][`${key}_COOLDOWN`]
+  let [result] = await query(command)
+  return result[`${key}_COOLDOWN`]
 }
 module.exports.getNotifedUserForStreamerOnEvent=async(streamer,key)=>{
   let command = `SELECT * FROM NOTIFY JOIN TWITCH_USER ON NOTIFY.TWITCH_ID=TWITCH_USER.TWITCH_ID WHERE STREAMER = '${streamer}' AND ${key.toUpperCase()} = '1'`
@@ -206,8 +206,8 @@ module.exports.removeWatchChannel=async(channel)=>{
 
 module.exports.getNotifyEntryForStreamer=async (user_id,streamer)=>{
   let command = `SELECT * FROM NOTIFY WHERE TWITCH_ID='${user_id}' AND STREAMER ='${streamer}'`
-  let databaseinfo = await query(command)
-  if(databaseinfo) return databaseinfo[0]
+  let [databaseinfo] = await query(command)
+  if(databaseinfo) return databaseinfo
   return undefined
 }
 module.exports.updateEventForUser=async(user_id,streamer,status,value)=>{
@@ -220,21 +220,21 @@ module.exports.addNewRecordToColorHistory=async(user_id,currentColor)=>{
 }
 module.exports.getRPSStatsForUserID=async(user_id)=>{
   let command  = `SELECT * FROM RPS_STATS JOIN TWITCH_USER ON RPS_STATS.TWITCH_ID = TWITCH_USER.TWITCH_ID WHERE RPS_STATS.TWITCH_ID ='${user_id}'`
-  let stats = await query(command)
-  if(!stats)  return undefined
+  if(await query(command===undefined))return undefined
+  let [{WIN,LOSE,DRAW}] = await query(command)
   return{
-    wins:stats[0].WIN,
-    losses:stats[0].LOSE,
-    draws:stats[0].DRAW,
+    wins:WIN,
+    losses:LOSE,
+    draws:DRAW,
   }
 }
 module.exports.getEmotegameStatsForUserID=async(user_id)=>{
   let command  = `SELECT * FROM EMOTEGAME_STATS JOIN TWITCH_USER ON EMOTEGAME_STATS.TWITCH_ID = TWITCH_USER.TWITCH_ID WHERE EMOTEGAME_STATS.TWITCH_ID ='${user_id}'`
-  let stats = await query(command)
-  if(!stats)  return undefined
+  if(await query(command===undefined))return undefined
+  let [{LETTERS_GUESSED,EMOTES_GUESSED}] = await query(command)
   return{
-    letters_guessed:stats[0].LETTERS_GUESSED,
-    emotes_guessed:stats[0].EMOTES_GUESSED,
+    letters_guessed:LETTERS_GUESSED,
+    emotes_guessed:EMOTES_GUESSED,
   }
 }
 module.exports.getLeaderboardPositionRPS= async(user_id)=>{
