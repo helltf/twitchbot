@@ -14,10 +14,10 @@ describe("Last ban",()=>{
     it("get one ban for channel if no channel is provided",async()=>{
         let channel = "TriHard"
         let username="testuser"
-        database.addNewBan(channel,testuser)
+        database.addNewBan(channel,username)
         let message = await lastban(channel)
         assert.isTrue(message.startsWith(`Last ban in channel ${channel} was`))
-        database.deleteBan(testuser)
+        database.deleteBan(channel,username)
     }).timeout(10000)
 })
 
