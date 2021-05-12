@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const database = require('./database');
-database.connect();
 const requiredir = require("require-dir")
 require('dotenv').config();
 requiredir("./lib/functions")
@@ -21,6 +20,8 @@ hb.watchclient=require("./lib/watchclient").watchclient
 hb.watchclient.startwatchClient=require("./lib/watchclient").startwatchClient
 
 const start = async()=>{
+    await database.connect(process.env.ENVIRONMENT);
+    if(process.env.ENVIRONMENT==="test") return;
     await updatecmd();
     await updateReadme();
     await addChannelsToWatchchannels()
