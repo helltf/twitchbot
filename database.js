@@ -1,6 +1,6 @@
-var mysql = require('mysql');
+var mysql = require('mysql')
 const chalk = require("chalk")
-require('dotenv').config();
+require('dotenv').config()
 
 const twitchdatabase = mysql.createConnection({
   host: process.env.HOST,
@@ -39,7 +39,30 @@ module.exports.connect =(ENVIRONMENT)=>{
     }
   })
 }
-
+module.exports.deleteBan=async(channel,username)=>{
+  let command = `DELETE FROM BANNED_USER WHERE USERNAME='${username}' AND CHANNEL='${channel}'`
+}
+module.exports.getAllowed=async(channel)=>{
+  let command = `SELECT ALLOWED,ALLOWED_LIVE FROM CHANNELS WHERE CHANNEL_NAME='${channel}'`
+  let response=await query(command)
+  if(!response) return{
+    allowed:false,
+    allowed_live:false
+  }
+  let [{ALLOWED,ALLOWED_LIVE}]=response
+  return{
+    allowed:ALLOWED,
+    allowed_live:ALLOWED_LIVE
+  }
+}
+module.exports.setDisabledForChannel=async(channel)=>{
+  let command = `UPDATE CHANNELS SET ALLOWED='0' WHERE CHANNEL_NAME='${channel}'`
+  return await query(command)
+}
+module.exports.setEnabledForChannel=async(channel)=>{
+  let command = `UPDATE CHANNELS SET ALLOWED='1' WHERE CHANNEL_NAME='${channel}'`
+  return await query(command)
+}
 module.exports.setPermissionsForUser=async (username,permissionlvl) =>{
   let command = `UPDATE TWITCH_USER SET PERMISSIONS ='${permissionlvl}' WHERE USERNAME ='${username}'`
   return await query(command)
@@ -58,6 +81,10 @@ module.exports.deleteCommand=async(commandname)=>{
 }
 module.exports.addNewUser=async(user)=>{
   let command = `INSERT INTO TWITCH_USER (USERNAME, TWITCH_ID, COLOR,PERMISSIONS,REGISTER_TIME) VALUES ('${user.username}', '${user["user-id"]}', '${user.color}','1','${Date.now()}')`
+  return await query(command)
+}
+module.exports.deleteUser=async(user_id)=>{
+  let command = `DELETE FROM TWITCH_USER WHERE TWITCH_ID='${user_id}'`
   return await query(command)
 }
 module.exports.userIsRegisteredForColorHistory=async(user_id)=>{
@@ -115,12 +142,13 @@ module.exports.getUserInfo=async(username)=>{
   let command = `SELECT * FROM TWITCH_USER WHERE USERNAME ='${username}'`
   let user_info =  await query(command)  
   if(user_info===undefined) return undefined
+  let [{USERNAME,TWITCH_ID,COLOR,PERMISSIONS,REGISTER_TIME}]=user_info
   return{
-    username:user_info[0].USERNAME,
-    twitch_id:user_info[0].TWITCH_ID,
-    color:user_info[0].COLOR,
-    permissions:user_info[0].PERMISSIONS,
-    register_time:user_info[0].REGISTER_TIME
+    username:USERNAME,
+    twitch_id:TWITCH_ID,
+    color:COLOR,
+    permissions:PERMISSIONS,
+    register_time:REGISTER_TIME
   }
 }
 module.exports.updateCommandValue=async(commandname,newvalue,key)=>{
