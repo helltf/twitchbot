@@ -38,6 +38,17 @@ module.exports.connect =(ENVIRONMENT)=>{
     }
   })
 }
+module.exports.channelInfoGetsUpdated = async (streamer)=>{
+  let command = `SELECT * FROM CHANNEL_INFO WHERE CHANNE_NAME = '${streamer}'`
+}
+module.exports.addNewNotifyEntryAllEvents = async ()=>{
+  let command = `INSERT INTO NOTIFY (TWITCH_ID,CHANNEL,STREAMER,LIVE,OFFLINE,TITLE,GAME) VALUES ('${user_id}','${channel}','${streamer}','1','1','1','1')`
+  return await query(command)
+}
+module.exports.addNewNotifyEntryNoEvents = async()=>{
+  let command = `INSERT INTO NOTIFY (TWITCH_ID,CHANNEL,STREAMER,LIVE,OFFLINE,TITLE,GAME) VALUES ('${user_id}','${channel}','${streamer}','0','0','0','0')`
+  return await query(command)
+}
 module.exports.deleteBan=async(channel,username)=>{
   let command = `DELETE FROM BANNED_USER WHERE USERNAME='${username}' AND CHANNEL='${channel}'`
   return await query(command)
