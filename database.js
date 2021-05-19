@@ -15,7 +15,6 @@ const testdatabase = mysql.createConnection({
   password: process.env.PASSWORD,
   database: process.env.TESTDATABASE
 });
-
 module.exports.connect =(ENVIRONMENT)=>{
   return new Promise((resolve,reject)=>{
     if(ENVIRONMENT!="test"){
@@ -41,6 +40,17 @@ module.exports.connect =(ENVIRONMENT)=>{
 }
 module.exports.deleteBan=async(channel,username)=>{
   let command = `DELETE FROM BANNED_USER WHERE USERNAME='${username}' AND CHANNEL='${channel}'`
+  return await query(command)
+}
+module.exports.setCurrentlyConnected = async(value,channel)=>{
+  let command = `UPDATE CHANNELS SET CURR_CONNECTED ='${value}' WHERE CHANNEL_NAME = '${channel}'`
+  return await query(command)
+}
+
+module.exports.isConnected = async (channel)=>{
+  let command  = `SELECT CURR_CONNECTED FROM CHANNELS WHERE CHANNEL_NAME = '${channel}'`
+  let result = await query(command)
+  return (result != undefined && result[0].CURR_CONNECTED != 0)
 }
 module.exports.getAllowed=async(channel)=>{
   let command = `SELECT ALLOWED,ALLOWED_LIVE FROM CHANNELS WHERE CHANNEL_NAME='${channel}'`
