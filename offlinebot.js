@@ -12,6 +12,10 @@ const ATupdater = require("./lib/functions/ATHandler").updateAT
 const updatecmd = require("./lib/functions/updateCommandsDatabase")
 const addChannelsToWatchchannels=require("./lib/functions/updateWatchchannels");
 
+global.games = {}
+games.rps = []
+games.emote = []
+
 global.hb = {}
 hb.client=require('./lib/client.js').client
 hb.sendAllowedMessage=require('./lib/client.js').sendAllowedMessage
