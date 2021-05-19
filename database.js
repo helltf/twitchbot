@@ -40,6 +40,7 @@ module.exports.connect =(ENVIRONMENT)=>{
 }
 module.exports.channelInfoGetsUpdated = async (streamer)=>{
   let command = `SELECT * FROM CHANNEL_INFO WHERE CHANNE_NAME = '${streamer}'`
+  return ((await query(command))!=undefined)
 }
 module.exports.addNewNotifyEntryAllEvents = async ()=>{
   let command = `INSERT INTO NOTIFY (TWITCH_ID,CHANNEL,STREAMER,LIVE,OFFLINE,TITLE,GAME) VALUES ('${user_id}','${channel}','${streamer}','1','1','1','1')`
