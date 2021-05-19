@@ -5,7 +5,7 @@ const database = require("../../../database")
 describe("Last ban",()=>{
     it("get no ban for channel if no channel is provided and database is empty",async()=>{
        let channel = "test1234"
-        let message = lastban(channel)
+        let message = await lastban(channel,undefined,[])
         assert.equal(message,`No ban tracked in channel: ${channel}!`)
     })
 }).timeout(10000)
@@ -15,7 +15,7 @@ describe("Last ban",()=>{
         let channel = "TriHard"
         let username="testuser"
         database.addNewBan(channel,username)
-        let message = await lastban(channel)
+        let message = await lastban(channel,undefined,[])
         assert.isTrue(message.startsWith(`Last ban in channel ${channel} was`))
         database.deleteBan(channel,username)
     }).timeout(10000)
@@ -24,8 +24,8 @@ describe("Last ban",()=>{
 describe("Last ban",()=>{
     it("get no ban from provided channel",async()=>{
         let channel = "TriHard"
-        database.addNewBan(channel,"testuser")
-        let message = await lastban(channel)
+        database.addNewBan(channel)
+        let message = await lastban(channel,"testuser",[])
         assert.isTrue(message.startsWith(`Last ban in channel ${channel} was`))
     }).timeout(10000)
 })
