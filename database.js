@@ -38,6 +38,35 @@ module.exports.connect =(ENVIRONMENT)=>{
     }
   })
 }
+module.exports.getPingUser = async ()=>{
+  let command = `SELECT * FROM PING JOIN TWITCH_USER ON PING.TWITCH_ID = TWITCH_USER.TWITCH_ID `
+  let result = await query(command)
+
+  if(!result) return undefined
+  return result.map(element=>{
+    return {
+      username:element.USERNAME,
+      user_id:element.TWITCH_ID,
+      regex:element.REGEX
+    }
+    
+  })
+}
+module.exports.isRegisteredForPing = async(id)=>{
+  let command = `SELECT * FROM PING WHERE TWITCH_ID = '${id}'`
+  return (await query(command))!=undefined
+}
+module.exports.addUserToPing = async(id,regex)=>{
+  let command = `INSERT INTO PING (TWITCH_ID,COUNTER,REGEX) VALUES ('${id}','1','${regex}')`
+  return await query(command)
+}
+module.exports.updateLastPing = async(user_id,channel,matchedWord)=>{
+  let command = `SELECT COUNTER FROM PING WHERE TWITCH_ID = '${user_id}'`
+  let [{COUNTER:counter}] = await query(command)
+  let update = `UPDATE PING SET COUNTER = '${counter+1}', LAST_PING_CHANNEL = '${channel}',LAST_PING_TIME='${Date.now()}',MATCHED='${matchedWord}'`
+  return await query(update)
+}
+
 module.exports.channelInfoGetsUpdated = async (streamer)=>{
   let command = `SELECT * FROM CHANNEL_INFO WHERE CHANNE_NAME = '${streamer}'`
   return ((await query(command))!=undefined)
@@ -145,7 +174,8 @@ module.exports.getAllWatchChannels=async()=>{
 }
 module.exports.isWatchChannel=async(channel)=>{
   let command = `SELECT * FROM WATCHCHANNELS WHERE CHANNEL_NAME ='${channel}'`
-  return await query(command)
+  let result = await query(command)
+  return result!=undefined
 }
 module.exports.setUpdateCooldown=async(channel,cooldown)=>{
   let command = `UPDATE CHANNEL_INFO SET NEXT_UPDATE ='${Date.now()+cooldown}' WHERE CHANNEL_NAME = '${channel}'`
