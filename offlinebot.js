@@ -6,6 +6,7 @@ require('dotenv').config();
 requiredir("./lib/functions")
 requiredir("./lib/gamehandler")
 require("./lib/watchclient");
+
 const updateReadme=require("./lib/functions/updateReadMe")
 const livestatus = require("./lib/notify/updatelivestatus")
 const ATupdater = require("./lib/functions/ATHandler").updateAT
@@ -22,7 +23,7 @@ hb.sendAllowedMessage=require('./lib/client.js').sendAllowedMessage
 hb.startClient=require("./lib/client").startClient
 hb.watchclient=require("./lib/watchclient").watchclient
 hb.watchclient.startwatchClient=require("./lib/watchclient").startwatchClient
-
+requiredir("./modules/")
 const start = async()=>{
     await database.connect(process.env.ENVIRONMENT);
     if(process.env.ENVIRONMENT==="test") return;
