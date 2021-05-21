@@ -10,8 +10,7 @@ require("./lib/watchclient");
 const updateReadme=require("./lib/functions/updateReadMe")
 const livestatus = require("./lib/notify/updatelivestatus")
 const ATupdater = require("./lib/functions/ATHandler").updateAT
-const updatecmd = require("./lib/functions/updateCommandsDatabase")
-const addChannelsToWatchchannels=require("./lib/functions/updateWatchchannels");
+const updatecmd = require("./lib/functions/updateCommandsDatabase");
 
 global.games = {}
 games.rps = []
@@ -23,13 +22,15 @@ hb.sendAllowedMessage=require('./lib/client.js').sendAllowedMessage
 hb.startClient=require("./lib/client").startClient
 hb.watchclient=require("./lib/watchclient").watchclient
 hb.watchclient.startwatchClient=require("./lib/watchclient").startwatchClient
+
+
 requiredir("./modules/")
+
 const start = async()=>{
     await database.connect(process.env.ENVIRONMENT);
     if(process.env.ENVIRONMENT==="test") return;
     await updatecmd();
     await updateReadme();
-    await addChannelsToWatchchannels()
     await hb.startClient()
     await hb.watchclient.startwatchClient();
     await ATupdater()
