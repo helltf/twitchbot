@@ -52,18 +52,35 @@ module.exports.getPingUser = async ()=>{
     
   })
 }
+module.exports.getLastPing = async(username)=>{
+  let command = `SELECT * FROM PING JOIN TWITCH_USER ON PING.TWITCH_ID = TWITCH_USER.TWITCH_ID WHERE TWITCH_USER.USERNAME='${username}'`
+  let result = await query(command)
+  if(!result) return
+  let [{COUNTER,LAST_PING_CHANNEL,LAST_PING_TIME,MATCHED,BY_USER}] = result
+  return {
+    counter:COUNTER,
+    pingchannel:LAST_PING_CHANNEL,
+    time:LAST_PING_TIME,
+    phrase:MATCHED,
+    by:BY_USER
+  }
+}
 module.exports.isRegisteredForPing = async(id)=>{
   let command = `SELECT * FROM PING WHERE TWITCH_ID = '${id}'`
+  return (await query(command))!=undefined
+}
+module.exports.isRegisteredForColorHistory = async(id)=>{
+  let command = `SELECT * FROM COLOR_HISTORY WHERE TWITCH_ID = '${id}'`
   return (await query(command))!=undefined
 }
 module.exports.addUserToPing = async(id,regex)=>{
   let command = `INSERT INTO PING (TWITCH_ID,COUNTER,REGEX) VALUES ('${id}','1','${regex}')`
   return await query(command)
 }
-module.exports.updateLastPing = async(user_id,channel,matchedWord)=>{
+module.exports.updateLastPing = async(user_id,channel,matchedWord,byUser)=>{
   let command = `SELECT COUNTER FROM PING WHERE TWITCH_ID = '${user_id}'`
   let [{COUNTER:counter}] = await query(command)
-  let update = `UPDATE PING SET COUNTER = '${counter+1}', LAST_PING_CHANNEL = '${channel}',LAST_PING_TIME='${Date.now()}',MATCHED='${matchedWord}'`
+  let update = `UPDATE PING SET COUNTER = '${counter+1}', LAST_PING_CHANNEL = '${channel}',LAST_PING_TIME='${Date.now()}',MATCHED='${matchedWord}', BY_USER='${byUser}' WHERE TWITCH_ID='${user_id}'`
   return await query(update)
 }
 
