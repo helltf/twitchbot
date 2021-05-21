@@ -1,6 +1,6 @@
 const database = require("./../database")
 
-hb.client.on('chat',async(channel,userstate,message,self)=>{
+hb.watchclient.on('chat',async(channel,userstate,message,self)=>{
     if(self) return
     channel = channel.replace("#","")
     let pinguser = await database.getPingUser()
@@ -8,10 +8,8 @@ hb.client.on('chat',async(channel,userstate,message,self)=>{
 
         const matchRegex = new RegExp(regex,"gmi")
         let match = message.toLowerCase().match(matchRegex)
-
         if(match){
-            database.updateLastPing(user_id,channel,match[0])
+            database.updateLastPing(user_id,channel,match[0],userstate.username.toLowerCase())
         }
-
     }
 })
