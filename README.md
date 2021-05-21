@@ -17,6 +17,7 @@ EMOTEGAME | 1 | none | none | Starts a game of hangman with thirdparty emotes
 EMOTEGAMESTATS | 1 | none | username | Provides your stats for emotegames
 JOIN | 3 | channel | none | Used to make the mainclient join a new channel
 LASTBAN | 1 | none | channel | Searches for the last ban occured in the given channel
+LASTPING | 1 | user | channel | Gets the information about the lastping for an user
 LASTTIMEOUT | 1 | none | channel | Searches for the last timeout occured in the given channel. Only tracks timeouts longer than 300s
 LEAVE | 3 | channel | none | Used to make the mainclient leave a channel
 LYRICS | 1 | song and creator | none | Retrieves the lyrics for a given song
