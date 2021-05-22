@@ -92,11 +92,11 @@ module.exports.channelInfoGetsUpdated = async (streamer)=>{
   let command = `SELECT * FROM CHANNEL_INFO WHERE CHANNEL_NAME = '${streamer}'`
   return ((await query(command))!=undefined)
 }
-module.exports.addNewNotifyEntryAllEvents = async ()=>{
+module.exports.addNewNotifyEntryAllEvents = async (user_id,channel,streamer)=>{
   let command = `INSERT INTO NOTIFY (TWITCH_ID,CHANNEL,STREAMER,LIVE,OFFLINE,TITLE,GAME) VALUES ('${user_id}','${channel}','${streamer}','1','1','1','1')`
   return await query(command)
 }
-module.exports.addNewNotifyEntryNoEvents = async()=>{
+module.exports.addNewNotifyEntryNoEvents = async(user_id,channel,streamer)=>{
   let command = `INSERT INTO NOTIFY (TWITCH_ID,CHANNEL,STREAMER,LIVE,OFFLINE,TITLE,GAME) VALUES ('${user_id}','${channel}','${streamer}','0','0','0','0')`
   return await query(command)
 }
