@@ -80,7 +80,7 @@ module.exports.addUserToPing = async(id,regex)=>{
 module.exports.updateLastPing = async(user_id,channel,matchedWord,byUser)=>{
   let command = `SELECT COUNTER FROM PING WHERE TWITCH_ID = '${user_id}'`
   let [{COUNTER:counter}] = await query(command)
-  let update = `UPDATE PING SET COUNTER = '${counter+1}', LAST_PING_CHANNEL = '${channel}',LAST_PING_TIME='${Date.now()}',MATCHED='${matchedWord}', BY_USER='${byUser}' WHERE TWITCH_ID='${user_id}'`
+  let update = `UPDATE PING SET COUNTER = '${counter+1}', LAST_PING_CHANNEL = '${channel}',LAST_PING_TIME='${Date.now()}',MATCHED=${mysql.escape(matchedWord)}, BY_USER='${byUser}' WHERE TWITCH_ID='${user_id}'`
   return await query(update)
 }
 
