@@ -338,6 +338,10 @@ module.exports.updateEventForUser=async(user_id,streamer,status,value)=>{
   let command = `UPDATE NOTIFY SET ${status.toUpperCase()}='${value}' WHERE TWITCH_ID='${user_id}' AND STREAMER ='${streamer}'` 
   return await query(command)
 }
+module.exports.updateRegexForPing=async(id,regex)=>{
+  let command = `UPDATE PING SET REGEX = '${regex}' WHERE TWITCH_ID = ${id}`
+  return await query(command)
+}
 module.exports.addNewRecordToColorHistory=async(user_id,currentColor)=>{
   let command = `INSERT INTO COLOR_HISTORY (TWITCH_ID,COLOR_HIST,REGISTER_TIME,LAST_CHANGE) VALUES ('${user_id}','["${currentColor}"]','${Date.now()}','${Date.now()}')`
   return await query(command)
