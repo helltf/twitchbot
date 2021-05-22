@@ -52,17 +52,21 @@ module.exports.getPingUser = async ()=>{
     
   })
 }
+module.exports.getPingRegex = async(id)=>{
+
+}
 module.exports.getLastPing = async(username)=>{
   let command = `SELECT * FROM PING JOIN TWITCH_USER ON PING.TWITCH_ID = TWITCH_USER.TWITCH_ID WHERE TWITCH_USER.USERNAME='${username}'`
   let result = await query(command)
   if(!result) return
-  let [{COUNTER,LAST_PING_CHANNEL,LAST_PING_TIME,MATCHED,BY_USER}] = result
+  let [{COUNTER,LAST_PING_CHANNEL,LAST_PING_TIME,MATCHED,BY_USER,REGEX}] = result
   return {
     counter:COUNTER,
     pingchannel:LAST_PING_CHANNEL,
     time:LAST_PING_TIME,
     phrase:MATCHED,
-    by:BY_USER
+    by:BY_USER,
+    regex:REGEX
   }
 }
 module.exports.isRegisteredForPing = async(id)=>{
@@ -85,7 +89,7 @@ module.exports.updateLastPing = async(user_id,channel,matchedWord,byUser)=>{
 }
 
 module.exports.channelInfoGetsUpdated = async (streamer)=>{
-  let command = `SELECT * FROM CHANNEL_INFO WHERE CHANNE_NAME = '${streamer}'`
+  let command = `SELECT * FROM CHANNEL_INFO WHERE CHANNEL_NAME = '${streamer}'`
   return ((await query(command))!=undefined)
 }
 module.exports.addNewNotifyEntryAllEvents = async ()=>{
