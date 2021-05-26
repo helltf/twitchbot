@@ -22,7 +22,7 @@ hb.sendAllowedMessage=require('./lib/client.js').sendAllowedMessage
 hb.startClient=require("./lib/client").startClient
 hb.watchclient=require("./lib/watchclient").watchclient
 hb.watchclient.startwatchClient=require("./lib/watchclient").startwatchClient
-
+hb.database = require("./database")
 
 requiredir("./modules/")
 
