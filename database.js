@@ -38,6 +38,29 @@ module.exports.connect =(ENVIRONMENT)=>{
     }
   })
 }
+module.exports.updateEmotes = async(channel,ffz,bttv,seventv)=>{
+  let command = `UPDATE EMOTES SET NEXT_UPDATE = '${Date.now()+5000}' , FFZ_EMOTES='${JSON.stringify(ffz)}',BTTV_EMOTES='${JSON.stringify(bttv)}' , 7TV_EMOTES='${JSON.stringify(seventv)}'WHERE CHANNELNAME ='${channel}'`
+  return await query(command)
+}
+module.exports.addNewLastAdded = (emote)=>{
+
+}
+module.exports.addNewLastRemoved = (emote)=>{
+
+}
+module.exports.getEmotesForChannel = async(channel)=>{
+  let command = `SELECT * FROM EMOTES WHERE CHANNELNAME=${channel}`
+  let {FFZ_EMOTES:ffz,BTTV_EMOTES:bttv} = await query(command)
+  return [ffz,bttv]
+}
+module.exports.getEmoteUpdateChannels=async()=>{
+  let command = `SELECT * FROM EMOTES WHERE NEXT_UPDATE < ${Date.now()}`
+  return await query(command)
+}
+module.exports.getEmoteChannels = async()=>{
+  let command = `SELECT * FROM EMOTES WHERE NEXT_UPDATE < ${Date.now()}`
+  return (await query(command)).map(channel=> channel.CHANNELNAME)
+}
 module.exports.getPingUser = async ()=>{
   let command = `SELECT * FROM PING JOIN TWITCH_USER ON PING.TWITCH_ID = TWITCH_USER.TWITCH_ID `
   let result = await query(command)
