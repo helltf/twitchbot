@@ -4,7 +4,6 @@ const antiPingRegex = new RegExp("[\u034f\u2800(\u{e0000}\u{dc00})\u180e\ufeff\u
 hb.watchclient.on('chat',async(channel,userstate,message,self)=>{
     channel = channel.replace("#","")
     let pinguser = await database.getPingUser()
-    console.log(pinguser)
     for({username,user_id,regex} of pinguser){
         if(username===userstate.username.toLowerCase()) continue
 
