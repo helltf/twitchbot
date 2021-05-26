@@ -71,7 +71,7 @@ module.exports.getLastPing = async(username)=>{
 }
 module.exports.isRegisteredForPing = async(id)=>{
   let command = `SELECT * FROM PING WHERE TWITCH_ID = '${id}'`
-  return (await query(command))!=undefined
+  return (await query(command)!=undefined)
 }
 module.exports.isRegisteredForColorHistory = async(id)=>{
   let command = `SELECT * FROM COLOR_HISTORY WHERE TWITCH_ID = '${id}'`
