@@ -6,7 +6,8 @@ const twitchdatabase = mysql.createConnection({
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
-  database: process.env.DATABASE
+  database: process.env.DATABASE,
+  charset : 'utf8mb4'
 });
 
 const testdatabase = mysql.createConnection({
@@ -38,8 +39,16 @@ module.exports.connect =(ENVIRONMENT)=>{
     }
   })
 }
-module.exports.updateEmotes = async(channel,ffz,bttv,seventv)=>{
-  let command = `UPDATE EMOTES SET NEXT_UPDATE = '${Date.now()+5000}' , FFZ_EMOTES='${JSON.stringify(ffz)}',BTTV_EMOTES='${JSON.stringify(bttv)}' , 7TV_EMOTES='${JSON.stringify(seventv)}'WHERE CHANNELNAME ='${channel}'`
+module.exports.updateChannelInfo = async ({title,is_live,game_id,broadcaster_login})=>{
+  let command =  `UPDATE CHANNEL_INFO SET LIVE='${is_live}',TITLE=${mysql.escape(title)},GAME_ID='${game_id}', LIVE_COOLDOWN='${Date.now()}',TITLE_COOLDOWN='${Date.now()}',GAME_COOLDOWN='${Date.now()}' WHERE CHANNEL_NAME='${broadcaster_login}'`
+  return await query(command)
+}
+module.exports.updateEmotes = async(channel,ffz,bttv)=>{
+  let command = `UPDATE EMOTES SET NEXT_UPDATE = '${Date.now()+5000}' , FFZ_EMOTES='${JSON.stringify(ffz)}',BTTV_EMOTES='${JSON.stringify(bttv)}' WHERE CHANNELNAME ='${channel}'`
+  return await query(command)
+}
+module.exports.addNewSuggestion = async(id,suggestion) =>{
+  let command = `INSERT INTO SUGGESTIONS (SUGGESTION,TIME,TWITCH_ID) VALUES ('${suggestion}','${Date.now()}','${id}')`
   return await query(command)
 }
 module.exports.addNewLastAdded = (emote)=>{
@@ -72,7 +81,6 @@ module.exports.getPingUser = async ()=>{
       user_id:element.TWITCH_ID,
       regex:element.REGEX
     }
-    
   })
 }
 module.exports.getPingRegex = async(id)=>{
