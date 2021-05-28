@@ -39,35 +39,49 @@ module.exports.connect =(ENVIRONMENT)=>{
     }
   })
 }
+const getLastEmotes = async(event, channel)=>{
+  event = event.toUpperCase()
+  let command = `SELECT LAST_${event} FROM EMOTES WHERE CHANNELNAME = '${channel}'`
+  return JSON.parse((await query(command))[0][`LAST_${event}`])
+}
+
+module.exports.updateLast = async (emote ,channel, event) =>{
+  let last = await getLastEmotes(event, channel)
+  let emoteList = Object.entries(last)
+  if(emoteList.length>10){
+    const oldestEmote = emoteList.reduce((current, savedValue)=>{return current[1] < savedValue ? current[1] : savedValue})[0]
+    delete last[oldestEmote]
+  }
+  last[emote] = Date.now()
+  let command = `UPDATE EMOTES SET LAST_${event} = '${JSON.stringify(last)}'`
+  return await query(command)
+}
+
 module.exports.updateChannelInfo = async ({title,is_live,game_id,broadcaster_login})=>{
   let command =  `UPDATE CHANNEL_INFO SET LIVE='${is_live}',TITLE=${mysql.escape(title)},GAME_ID='${game_id}', LIVE_COOLDOWN='${Date.now()}',TITLE_COOLDOWN='${Date.now()}',GAME_COOLDOWN='${Date.now()}' WHERE CHANNEL_NAME='${broadcaster_login}'`
   return await query(command)
 }
 module.exports.updateEmotes = async(channel,ffz,bttv)=>{
-  let command = `UPDATE EMOTES SET NEXT_UPDATE = '${Date.now()+5000}' , FFZ_EMOTES='${JSON.stringify(ffz)}',BTTV_EMOTES='${JSON.stringify(bttv)}' WHERE CHANNELNAME ='${channel}'`
+  let command = `UPDATE EMOTES SET FFZ_EMOTES='${JSON.stringify(ffz)}',BTTV_EMOTES='${JSON.stringify(bttv)}' WHERE CHANNELNAME ='${channel}'`
   return await query(command)
 }
 module.exports.addNewSuggestion = async(id,suggestion) =>{
   let command = `INSERT INTO SUGGESTIONS (SUGGESTION,TIME,TWITCH_ID) VALUES ('${suggestion}','${Date.now()}','${id}')`
   return await query(command)
 }
-module.exports.addNewLastAdded = (emote)=>{
 
-}
-module.exports.addNewLastRemoved = (emote)=>{
-
-}
 module.exports.getEmotesForChannel = async(channel)=>{
   let command = `SELECT * FROM EMOTES WHERE CHANNELNAME=${channel}`
   let {FFZ_EMOTES:ffz,BTTV_EMOTES:bttv} = await query(command)
   return [ffz,bttv]
 }
+
 module.exports.getEmoteUpdateChannels=async()=>{
-  let command = `SELECT * FROM EMOTES WHERE NEXT_UPDATE < ${Date.now()}`
+  let command = `SELECT * FROM EMOTES`
   return await query(command)
 }
 module.exports.getEmoteChannels = async()=>{
-  let command = `SELECT * FROM EMOTES WHERE NEXT_UPDATE < ${Date.now()}`
+  let command = `SELECT * FROM EMOTES`
   return (await query(command)).map(channel=> channel.CHANNELNAME)
 }
 module.exports.getPingUser = async ()=>{
@@ -436,3 +450,5 @@ const query = (command)=>{
     }
   })
 }
+
+module.exports.getLastEmotes = getLastEmotes
