@@ -29,6 +29,7 @@ PING | 1 | none | none | Just a Ping command 4Head
 REGISTER | 1 | none | none | Deprecated, No longer required
 REGISTERCOLOR | 1 | none | none | Used to register yourself for colorhistory. The bot will save your 10 latest colors and the time of your last change
 REMOVEME | 1 | streamer event | none | Disables notifications for a given streamern on an certain event. Right usage: hb notify <streamer> <event>. Available events: live/offline/title/game/all/emote_removed/emote_added
+REMOVESUGGESTION | 1 | id | none | removes your suggestion from the database
 RPS | 1 | [rock/paper/scissors] | none | play a game of rock, paper, scissors vs. the bot
 RPSPLAYERGAME | 1 | player | none | Play a game of rps
 RPSSTATS | 1 | none | username | Provides your stats for rps
