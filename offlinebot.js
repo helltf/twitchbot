@@ -25,6 +25,7 @@ hb.watchclient=require("./lib/watchclient").watchclient
 hb.watchclient.startwatchClient=require("./lib/watchclient").startwatchClient
 hb.database = require("./database")
 hb.util = require("./lib/functions/functions")
+hb.suggestions = []
 
 requiredir("./modules/")
 
