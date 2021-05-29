@@ -31,13 +31,13 @@ requiredir("./modules/")
 const start = async()=>{
     await database.connect(process.env.ENVIRONMENT);
     if(process.env.ENVIRONMENT==="test") return 
-    await initEmotes()
     await updatecmd();
     await updateReadme();
     await hb.startClient()
     await hb.watchclient.startwatchClient();
     await ATupdater()
     startLiveUpdates()
+    await initEmotes()
     setInterval( updateEmotes,5000)
     setInterval(ATupdater,3300000)
 }
