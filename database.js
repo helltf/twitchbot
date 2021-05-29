@@ -1,4 +1,4 @@
-var mysql = require('mysql')
+const mysql = require('mysql')
 const chalk = require("chalk")
 require('dotenv').config()
 
@@ -45,6 +45,15 @@ const getLastEmotes = async(event, channel)=>{
   return JSON.parse((await query(command))[0][`LAST_${event}`])
 }
 
+module.exports.emotesGetsUpdated = async(streamer) =>{
+    let command = `SELECT * FROM EMOTES WHERE CHANNELNAME = '${streamer}'`
+    return ((await query(command))!=undefined)
+}
+module.exports.addNewChannelForEmoteUpdates = async (streamer)=>{
+  let command = `INSERT INTO EMOTES (CHANNELNAME,FFZ_EMOTES,BTTV_EMOTES,LAST_ADDED,LAST_REMOVED) VALUES ('${streamer}','[]','[]','{}','{}')`
+  return await query(command)
+}
+
 module.exports.updateLast = async (emote ,channel, event) =>{
   let last = await getLastEmotes(event, channel)
   let emoteList = Object.entries(last)
@@ -53,7 +62,7 @@ module.exports.updateLast = async (emote ,channel, event) =>{
     delete last[oldestEmote]
   }
   last[emote] = Date.now()
-  let command = `UPDATE EMOTES SET LAST_${event} = '${JSON.stringify(last)}'`
+  let command = `UPDATE EMOTES SET LAST_${event} = '${JSON.stringify(last)}' WHERE CHANNELNAME = ${channel}`
   return await query(command)
 }
 
@@ -142,7 +151,7 @@ module.exports.addNewNotifyEntryAllEvents = async (user_id,channel,streamer)=>{
   return await query(command)
 }
 module.exports.addNewNotifyEntryNoEvents = async(user_id,channel,streamer)=>{
-  let command = `INSERT INTO NOTIFY (TWITCH_ID,CHANNEL,STREAMER,LIVE,OFFLINE,TITLE,GAME) VALUES ('${user_id}','${channel}','${streamer}','0','0','0','0')`
+  let command = `INSERT INTO NOTIFY (TWITCH_ID,CHANNEL,STREAMER,LIVE,OFFLINE,TITLE,GAME,EMOTE_ADDED,EMOTE_REMOVED) VALUES ('${user_id}','${channel}','${streamer}','0','0','0','0','0','0')`
   return await query(command)
 }
 module.exports.deleteBan=async(channel,username)=>{
