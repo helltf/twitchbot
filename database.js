@@ -58,7 +58,11 @@ module.exports.connect = ENVIRONMENT => {
 const getLastEmotes = async (event, channel) => {
 	event = event.toUpperCase()
 	let command = `SELECT LAST_${event} FROM EMOTES WHERE CHANNELNAME = '${channel}'`
-	return JSON.parse((await query(command))[0][`LAST_${event}`])
+	let result = await query(command)
+	if(!result) return undefined
+	return Object.entries(JSON.parse(result[0][`LAST_${event}`])).sort(([, a], [, b]) => {
+		return b - a
+	})
 }
 module.exports.getSuggestionForUser = async id => {
 	let command = `SELECT ID FROM SUGGESTIONS WHERE TWITCH_ID ='${id}'`
