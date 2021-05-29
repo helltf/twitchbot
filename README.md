@@ -16,6 +16,7 @@ COMMANDS | 1 | none | none | Gives you a list containing all available commands
 DISABLEMESSAGES | 2 | none | none | Used to disallow messages send by the bot in the current channel
 EMOTEGAME | 1 | none | none | Starts a game of hangman with thirdparty emotes
 EMOTEGAMESTATS | 1 | none | username | Provides your stats for emotegames
+EMOTES | 1 |  | channel | Give the latest added emotes for the channel
 EVAL | 4 | code | none | Evaluates the given code
 JOIN | 3 | channel | none | Used to make the mainclient join a new channel
 LASTBAN | 1 | none | channel | Searches for the last ban occured in the given channel
@@ -28,6 +29,7 @@ NOTIFY | 1 | streamer event | none | Enables notifications for a given streamern
 PING | 1 | none | none | Just a Ping command 4Head
 REGISTER | 1 | none | none | Deprecated, No longer required
 REGISTERCOLOR | 1 | none | none | Used to register yourself for colorhistory. The bot will save your 10 latest colors and the time of your last change
+REMOVED | 1 |  | channel | Give the latest removed emotes for the channel
 REMOVEME | 1 | streamer event | none | Disables notifications for a given streamern on an certain event. Right usage: hb notify <streamer> <event>. Available events: live/offline/title/game/all/emote_removed/emote_added
 REMOVESUGGESTION | 1 | id | none | removes your suggestion from the database
 RPS | 1 | [rock/paper/scissors] | none | play a game of rock, paper, scissors vs. the bot
