@@ -60,9 +60,7 @@ const getLastEmotes = async (event, channel) => {
 	let command = `SELECT LAST_${event} FROM EMOTES WHERE CHANNELNAME = '${channel}'`
 	let result = await query(command)
 	if(!result) return undefined
-	return Object.entries(JSON.parse(result[0][`LAST_${event}`])).sort(([, a], [, b]) => {
-		return b - a
-	})
+	return JSON.parse(result[0][`LAST_${event}`])
 }
 module.exports.getSuggestionForUser = async id => {
 	let command = `SELECT ID FROM SUGGESTIONS WHERE TWITCH_ID ='${id}'`
@@ -97,7 +95,6 @@ module.exports.addNewChannelForEmoteUpdates = async (streamer, [ffz, bttv]) => {
 module.exports.updateLast = async (emote, channel, event) => {
 	let last = await getLastEmotes(event, channel)
 	event = event.toUpperCase()
-	let emoteList = Object.entries(last)
 	if (emoteList.length > 10) {
 		const oldestEmote = emoteList.reduce((current, savedValue) => {
 			return current[1] < savedValue ? current[1] : savedValue
