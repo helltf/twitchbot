@@ -92,6 +92,7 @@ module.exports.addNewChannelForEmoteUpdates = async (streamer, [ffz, bttv]) => {
 
 module.exports.updateLast = async (emote, channel, event) => {
 	let last = await getLastEmotes(event, channel)
+	event = event.toUpperCase()
 	let emoteList = Object.entries(last)
 	if (emoteList.length > 10) {
 		const oldestEmote = emoteList.reduce((current, savedValue) => {
@@ -102,7 +103,7 @@ module.exports.updateLast = async (emote, channel, event) => {
 	last[emote] = Date.now()
 	let command = `UPDATE EMOTES SET LAST_${event} = '${JSON.stringify(
 		last
-	)}' WHERE CHANNELNAME = ${channel}`
+	)}' WHERE CHANNELNAME = '${channel}'`
 	return await query(command)
 }
 
