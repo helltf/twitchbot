@@ -83,8 +83,10 @@ module.exports.emotesGetsUpdated = async streamer => {
 	let command = `SELECT * FROM EMOTES WHERE CHANNELNAME = '${streamer}'`
 	return (await query(command)) != undefined
 }
-module.exports.addNewChannelForEmoteUpdates = async streamer => {
-	let command = `INSERT INTO EMOTES (CHANNELNAME,FFZ_EMOTES,BTTV_EMOTES,LAST_ADDED,LAST_REMOVED) VALUES ('${streamer}','[]','[]','{}','{}')`
+module.exports.addNewChannelForEmoteUpdates = async (streamer, [ffz, bttv]) => {
+	let command = `INSERT INTO EMOTES (CHANNELNAME,FFZ_EMOTES,BTTV_EMOTES,LAST_ADDED,LAST_REMOVED) VALUES ('${streamer}','${JSON.stringify(
+		ffz
+	)}','${JSON.stringify(bttv)}','{}','{}')`
 	return await query(command)
 }
 
@@ -489,9 +491,9 @@ module.exports.removeWatchChannel = async channel => {
 
 module.exports.getNotifyEntryForStreamer = async (user_id, streamer) => {
 	let command = `SELECT * FROM NOTIFY WHERE TWITCH_ID='${user_id}' AND STREAMER ='${streamer}'`
-	if ((await query(command)) === undefined) return undefined
-	let [databaseinfo] = await query(command)
-	return databaseinfo
+	let result = await query(command)
+	if (!result) return undefined
+	return result[0]
 }
 module.exports.updateEventForUser = async (
 	user_id,
