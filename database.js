@@ -95,6 +95,7 @@ module.exports.addNewChannelForEmoteUpdates = async (streamer, [ffz, bttv]) => {
 module.exports.updateLast = async (emote, channel, event) => {
 	let last = await getLastEmotes(event, channel)
 	event = event.toUpperCase()
+	emoteList = Object.entries(last)
 	if (emoteList.length > 10) {
 		const oldestEmote = emoteList.reduce((current, savedValue) => {
 			return current[1] < savedValue ? current[1] : savedValue
