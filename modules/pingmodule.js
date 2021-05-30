@@ -2,6 +2,7 @@ const database = require("./../database")
 const antiPingRegex = new RegExp("[\u034f\u2800(\u{e0000}\u{dc00})\u180e\ufeff\u2000-\u200d\u206D]","gu")
 
 hb.watchclient.on('chat',async(channel,userstate,message,self)=>{
+    if(userstate.username==="helltfbot") return
     channel = channel.replace("#","")
     let pinguser = await database.getPingUser()
     for({username,user_id,regex} of pinguser){
