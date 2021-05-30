@@ -146,7 +146,7 @@ module.exports.getEmoteChannels = async () => {
 	return (await query(command)).map(channel => channel.CHANNELNAME)
 }
 module.exports.getPingUser = async () => {
-	let command = `SELECT * FROM PING JOIN TWITCH_USER ON PING.TWITCH_ID = TWITCH_USER.TWITCH_ID `
+	let command = `SELECT * FROM LASTPING JOIN TWITCH_USER ON LASTPING.TWITCH_ID = TWITCH_USER.TWITCH_ID `
 	let result = await query(command)
 
 	if (!result) return undefined
@@ -160,7 +160,7 @@ module.exports.getPingUser = async () => {
 }
 module.exports.getPingRegex = async id => {}
 module.exports.getLastPing = async username => {
-	let command = `SELECT * FROM PING JOIN TWITCH_USER ON PING.TWITCH_ID = TWITCH_USER.TWITCH_ID WHERE TWITCH_USER.USERNAME='${username}'`
+	let command = `SELECT * FROM LASTPING JOIN TWITCH_USER ON LASTPING.TWITCH_ID = TWITCH_USER.TWITCH_ID WHERE TWITCH_USER.USERNAME='${username}'`
 	let result = await query(command)
 	if (!result) return
 	let [{COUNTER, LAST_PING_CHANNEL, LAST_PING_TIME, MATCHED, BY_USER, REGEX}] =
@@ -175,7 +175,7 @@ module.exports.getLastPing = async username => {
 	}
 }
 module.exports.isRegisteredForPing = async id => {
-	let command = `SELECT * FROM PING WHERE TWITCH_ID = '${id}'`
+	let command = `SELECT * FROM LASTPING WHERE TWITCH_ID = '${id}'`
 	return (await query(command)) != undefined
 }
 module.exports.isRegisteredForColorHistory = async id => {
@@ -183,7 +183,7 @@ module.exports.isRegisteredForColorHistory = async id => {
 	return (await query(command)) != undefined
 }
 module.exports.addUserToPing = async (id, regex) => {
-	let command = `INSERT INTO PING (TWITCH_ID,COUNTER,REGEX) VALUES ('${id}','1','${regex}')`
+	let command = `INSERT INTO LASTPING (TWITCH_ID,COUNTER,REGEX) VALUES ('${id}','1','${regex}')`
 	return await query(command)
 }
 module.exports.updateLastPing = async (
@@ -192,9 +192,9 @@ module.exports.updateLastPing = async (
 	matchedWord,
 	byUser
 ) => {
-	let command = `SELECT COUNTER FROM PING WHERE TWITCH_ID = '${user_id}'`
+	let command = `SELECT COUNTER FROM LASTPING WHERE TWITCH_ID = '${user_id}'`
 	let [{COUNTER: counter}] = await query(command)
-	let update = `UPDATE PING SET COUNTER = '${
+	let update = `UPDATE LASTPING SET COUNTER = '${
 		counter + 1
 	}', LAST_PING_CHANNEL = '${channel}',LAST_PING_TIME='${Date.now()}',MATCHED=${mysql.escape(
 		matchedWord
@@ -508,7 +508,7 @@ module.exports.updateEventForUser = async (
 	return await query(command)
 }
 module.exports.updateRegexForPing = async (id, regex) => {
-	let command = `UPDATE PING SET REGEX = '${regex}' WHERE TWITCH_ID = ${id}`
+	let command = `UPDATE LASTPING SET REGEX = '${regex}' WHERE TWITCH_ID = ${id}`
 	return await query(command)
 }
 module.exports.addNewRecordToColorHistory = async (user_id, currentColor) => {
