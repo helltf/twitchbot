@@ -68,6 +68,10 @@ module.exports.getSuggestionForUser = async id => {
 	if (!result) return 0
 	return result.length
 }
+module.exports.insertNewPing = async(user_id, channel, message, by_user)=>{
+	let command = `INSERT INTO PINGS (TWITCH_ID,LAST_PING_CHANNEL, LAST_PING_TIME,BY_USER, MESSAGE) VALUES('${user_id}','${channel}','${Date.now()}','${by_user}',${mysql.escape(message)})`
+	return await query(command)
+}
 module.exports.getLatestSuggestionId = async () => {
 	let command = `SELECT MAX(ID) as ID FROM SUGGESTIONS`
 	return (await query(command))[0].ID
