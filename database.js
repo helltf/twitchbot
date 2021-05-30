@@ -62,6 +62,20 @@ const getLastEmotes = async (event, channel) => {
 	if(!result) return {}
 	return JSON.parse(result[0][`LAST_${event}`])
 }
+module.exports.getColorHistoryForUser = async (username)=>{
+	let command = `SELECT * FROM COLOR_HISTORY JOIN TWITCH_USER ON COLOR_HISTORY.TWITCH_ID=TWITCH_USER.TWITCH.ID WHERE TWITCH_USER.USERNAME='${username}'`
+	return await query(command)
+}
+module.exports.addIgnoredPingUser = async (id)=>{
+	let command = `INSERT INTO IGNORED_PING_USER (TWITCH_ID) VALUES ('${id}')`
+	return await query(command)
+}
+module.exports.getIgnoredPingUser = async ()=>{
+	let command = `SELECT * FROM IGNORED_PING_USER`
+	let result = await query(command)
+	if(!result) return[]
+	return result.map(user=>user.TWITCH_ID)
+}
 module.exports.getSuggestionForUser = async id => {
 	let command = `SELECT ID FROM SUGGESTIONS WHERE TWITCH_ID ='${id}'`
 	let result = await query(command)
