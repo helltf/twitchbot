@@ -63,7 +63,7 @@ const getLastEmotes = async (event, channel) => {
 	return JSON.parse(result[0][`LAST_${event}`])
 }
 module.exports.getColorHistoryForUser = async (username)=>{
-	let command = `SELECT * FROM COLOR_HISTORY JOIN TWITCH_USER ON COLOR_HISTORY.TWITCH_ID=TWITCH_USER.TWITCH.ID WHERE TWITCH_USER.USERNAME='${username}'`
+	let command = `SELECT * FROM COLOR_HISTORY JOIN TWITCH_USER ON COLOR_HISTORY.TWITCH_ID=TWITCH_USER.TWITCH_ID WHERE TWITCH_USER.USERNAME='${username}'`
 	return await query(command)
 }
 module.exports.addIgnoredPingUser = async (id)=>{
