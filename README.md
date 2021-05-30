@@ -10,7 +10,7 @@ BANSTATS | 1 | none | user | Returnes the counter for bans tracked
 BOTINFO | 1 | none | none | Gives an info about the bot
 CHANNELINFO | 1 | none | none | Retrieves the currents stats about the channel
 CHATSTATS | 1 | user channel | none | Checks the chatterlist of the streamer
-COLORHISTORY | 1 | none | none | The bot will send a message containing your 10 latest colorchanges and the time between your latest change and now
+COLORHISTORY | 1 | none | username | The bot will send a message containing your 10 latest colorchanges and the time between your latest change and now
 COMMANDINFO | 1 | command | none | Gives you an info about the given command
 COMMANDS | 1 | none | none | Gives you a list containing all available commands
 DISABLEMESSAGES | 2 | none | none | Used to disallow messages send by the bot in the current channel
