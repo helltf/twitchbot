@@ -3,6 +3,7 @@ const antiPingRegex = new RegExp("[\u034f\u2800(\u{e0000}\u{dc00})\u180e\ufeff\u
 
 hb.watchclient.on('chat',async(channel,userstate,message,self)=>{
     if(userstate.username==="helltfbot") return
+    if((await database.getIgnoredPingUser()).includes(userstate.user_id)) return
     channel = channel.replace("#","")
     let pinguser = await database.getPingUser()
 
