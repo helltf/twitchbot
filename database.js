@@ -63,6 +63,7 @@ const getLastEmotes = async (event, channel) => {
 	return JSON.parse(result[0][`LAST_${event}`])
 }
 module.exports.updateChannelInfoValue = async(key,value,channelname)=>{
+	if(!value) return
 	let command =`UPDATE CHANNEL_INFO SET ${key}=${mysql.escape(value.replace("'","\'"))} WHERE CHANNEL_NAME ='${channelname}'`
 	return await query(command)
 }
