@@ -138,6 +138,12 @@ module.exports.updateChannelInfo = async ({
 	)},GAME_ID='${game_id}', LIVE_COOLDOWN='${Date.now()}',TITLE_COOLDOWN='${Date.now()}',GAME_COOLDOWN='${Date.now()}' WHERE CHANNEL_NAME='${broadcaster_login}'`
 	return await query(command)
 }
+module.exports.getNotifyMessage = async (event,channel)=>{
+	let command = `SELECT * FROM NOTIFY_MESSAGE WHERE CHANNEL_NAME = '${channel}'`
+	let result =await query(command)
+	if(!result) return undefined
+	return result[0][event.toUpperCase()]
+}
 module.exports.updateEmotes = async (channel, ffz, bttv) => {
 	let command = `UPDATE EMOTES SET FFZ_EMOTES='${JSON.stringify(
 		ffz
@@ -476,10 +482,10 @@ module.exports.addNewChannelForAPIUpdates = async (streamer, currentDate) => {
 	let command = `INSERT INTO CHANNEL_INFO (CHANNEL_NAME,LIVE,TITLE,GAME_ID,NEXT_UPDATE,LIVE_COOLDOWN,TITLE_COOLDOWN,GAME_COOLDOWN) VALUES ('${streamer}','${undefined}','${undefined}','${-1}','${currentDate}','${currentDate}','${currentDate}','${currentDate}')`
 	return await query(command)
 }
-module.exports.getNotifyCooldownForKey = async (key, channelname) => {
-	let command = `SELECT ${key}_COOLDOWN FROM CHANNEL_INFO WHERE CHANNEL_NAME ='${channelname}' `
+module.exports.getNotifyCooldownForEvent = async (event, channelname) => {
+	let command = `SELECT ${event}_COOLDOWN FROM CHANNEL_INFO WHERE CHANNEL_NAME ='${channelname}' `
 	let [result] = await query(command)
-	return result[`${key}_COOLDOWN`]
+	return result[`${event}_COOLDOWN`]
 }
 module.exports.getNotifedUserForStreamerOnEvent = async (streamer, key) => {
 	let command = `SELECT * FROM NOTIFY JOIN TWITCH_USER ON NOTIFY.TWITCH_ID=TWITCH_USER.TWITCH_ID WHERE STREAMER = '${streamer}' AND ${key.toUpperCase()} = '1'`
