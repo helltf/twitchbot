@@ -63,8 +63,6 @@ const getLastEmotes = async (event, channel) => {
 	return JSON.parse(result[0][`LAST_${event}`])
 }
 module.exports.updateChannelInfoValue = async(key,value,channelname)=>{
-	console.log(value,key,channelname)
-	if(typeof value===String) value = value.replace("'","\'")
 	let command =`UPDATE CHANNEL_INFO SET ${key}=${mysql.escape(value)} WHERE CHANNEL_NAME ='${channelname}'`
 	return await query(command)
 }
@@ -436,7 +434,7 @@ module.exports.selectWhere = selectWhere = async (
 }
 
 module.exports.updateWhere = async (table, set, setvalue, where, value) => {
-	if(!value) return
+	if(!setvalue) return
 	let command = `UPDATE ${table} SET ${set} ='${setvalue}'WHERE ${where} = '${value}'`
 	return await query(command)
 }
