@@ -434,6 +434,7 @@ module.exports.selectWhere = selectWhere = async (
 }
 
 module.exports.updateWhere = async (table, set, setvalue, where, value) => {
+	if(!value) return
 	let command = `UPDATE ${table} SET ${set} ='${setvalue}'WHERE ${where} = '${value}'`
 	return await query(command)
 }
