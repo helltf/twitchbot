@@ -430,7 +430,7 @@ module.exports.selectWhere = selectWhere = async (
 }
 
 module.exports.updateWhere = async (table, set, setvalue, where, value) => {
-	let command = `UPDATE ${table} SET ${set} ='${setvalue}' WHERE ${where} = '${value}'`
+	let command = `UPDATE ${table} SET ${set} =${mysql.escape(setvalue.replace("'","\'"))}WHERE ${where} = '${value}'`
 	return await query(command)
 }
 
