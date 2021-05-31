@@ -2,7 +2,7 @@
 All available Commands:
 
 | COMMAND | PERMISSIONS | PARAMETERS(req) | PARAMETERS(opt) | DESCRIPTION |
-| :---:|:---:| :---:|:---:|:---:|
+| ---|---| ---|---|---|
 ADDPING|1|none|none|Adds an additional ping for your account|
 ALLOWMESSAGES|2|none|none|Used to allow messages send by the bot in the current channel|
 BANSEARCH|1|user|channel|Searches for the last ban for a certain user|
