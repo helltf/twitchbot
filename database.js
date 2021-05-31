@@ -134,7 +134,7 @@ module.exports.updateChannelInfo = async ({
 	broadcaster_login
 }) => {
 	let command = `UPDATE CHANNEL_INFO SET LIVE='${is_live}',TITLE=${mysql.escape(
-		title
+		title.replace("'","\'")
 	)},GAME_ID='${game_id}', LIVE_COOLDOWN='${Date.now()}',TITLE_COOLDOWN='${Date.now()}',GAME_COOLDOWN='${Date.now()}' WHERE CHANNEL_NAME='${broadcaster_login}'`
 	return await query(command)
 }
