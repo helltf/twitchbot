@@ -62,6 +62,10 @@ const getLastEmotes = async (event, channel) => {
 	if(!result) return {}
 	return JSON.parse(result[0][`LAST_${event}`])
 }
+module.exports.updateChannelInfoValue = async(key,value,channelname)=>{
+	let command =`UPDATE CHANNEL_INFO SET key=${mysql.escape(value.replace("'","\'"))} WHERE CHANNEL_NAME ='${channelname}'`
+	return await query(command)
+}
 module.exports.getColorHistoryForUser = async (username)=>{
 	let command = `SELECT * FROM COLOR_HISTORY JOIN TWITCH_USER ON COLOR_HISTORY.TWITCH_ID=TWITCH_USER.TWITCH_ID WHERE TWITCH_USER.USERNAME='${username}'`
 	return await query(command)
@@ -430,7 +434,7 @@ module.exports.selectWhere = selectWhere = async (
 }
 
 module.exports.updateWhere = async (table, set, setvalue, where, value) => {
-	let command = `UPDATE ${table} SET ${set} =${mysql.escape(setvalue.replace("'","\'"))}WHERE ${where} = '${value}'`
+	let command = `UPDATE ${table} SET ${set} ='${setvalue}'WHERE ${where} = '${value}'`
 	return await query(command)
 }
 
