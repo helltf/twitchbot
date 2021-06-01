@@ -160,7 +160,7 @@ module.exports.addNewSuggestion = async (suggestionId, user_id, suggestion) => {
 }
 
 module.exports.getEmotesForChannel = async channel => {
-	let command = `SELECT * FROM EMOTES WHERE CHANNELNAME=${channel}`
+	let command = `SELECT * FROM EMOTES WHERE CHANNELNAME='${channel}'`
 	let {FFZ_EMOTES: ffz, BTTV_EMOTES: bttv} = await query(command)
 	return [ffz, bttv]
 }
