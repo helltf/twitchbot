@@ -62,6 +62,22 @@ const getLastEmotes = async (event, channel) => {
 	if(!result) return {}
 	return JSON.parse(result[0][`LAST_${event}`])
 }
+module.exports.setCustomMessageToDefault = async (event, channel)=>{
+	let command = `UPDATE NOTIFY_MESSAGE SET ${event} = ${mysql.escape(null)} WHERE CHANNEL_NAME='${channel}'`
+	return await query(command)
+}
+module.exports.updateCustomMessage = async(channel, event, newMessage)=>{ 
+	let command = `UPDATE NOTIFY_MESSAGE SET ${event} = '${newMessage}' WHERE CHANNEL_NAME='${channel}'`
+	return await query(command)
+}
+module.exports.hasCustomMessages = async(channel)=>{
+	let command = `SELECT * FROM NOTIFY_MESSAGE WHERE CHANNEL_NAME='${channel}'`
+	return (await query(command))!=undefined
+}
+module.exports.addNewCustomMessage = async(channel, event, newMessage) =>{
+	let command = `INSERT INTO NOTIFY_MESSAGE (CHANNEL_NAME, ${event}) VALUES ('${channel}',${mysql.escape(newMessage.replace("'","\'"))})`
+	return await query(command)
+}
 module.exports.updateChannelInfoValue = async(key,value,channelname)=>{
 	let command =`UPDATE CHANNEL_INFO SET ${key}=${mysql.escape(value)} WHERE CHANNEL_NAME ='${channelname}'`
 	return await query(command)
@@ -574,11 +590,6 @@ module.exports.getLeaderboardPositionEmoteGame = async user_id => {
 	return allStats.findIndex(user => user.TWITCH_ID === parseInt(user_id)) + 1
 }
 const query = command => {
-	if (
-		command.search(/^INSERT$|^UPDATE$|^DELETE$/) != -1 &&
-		process.env.IS_RASPI === 'false'
-	)
-		return
 	return new Promise((resolve, reject) => {
 		if (process.env.ENVIRONMENT === 'test') {
 			testdatabase.query(command, (error, result) => {
