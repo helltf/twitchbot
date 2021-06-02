@@ -5,10 +5,9 @@ hb.watchclient.on("action",(channel,user,message,self)=>{
     channel = channel.replace("#","")
     if(message.startsWith("[Cookies]")){
         let username =  message.match(/(?<=]\s)[^[].+(?=\s->)/)
-        if(!username[0])
-        username = username[0]
+        if(!username) return
+            username = username[0]
         let amount = message.match(/(?<=\().+(?=\))/)
-        console.log(amount)
         if(!amount[0]) return
         amount = amount[0]==="±0" ? 0 : parseInt(amount[0])
         database.addNewCookieEvent(username, amount, channel)
