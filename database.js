@@ -164,6 +164,14 @@ module.exports.getNotifyMessage = async (event,channel)=>{
 	if(!result) return undefined
 	return result[0][event.toUpperCase()]
 }
+module.exports.addNewCookieReset = async(username)=>{
+	let command = `INSERT INTO COOKIE_RESET (username, TIME) VALUES('${username}','${Date.now()}')`
+	return await query(command)
+}
+module.exports.addNewCookieEvent = async(username, amount)=>{
+	let command = `INSERT INTO COOKIES (USERNAME, AMOUNT, TIME) VALUES ('${username}','${amount}',${Date.now()})`
+	return await query(command)
+}
 module.exports.updateEmotes = async (channel, ffz, bttv) => {
 	let command = `UPDATE EMOTES SET FFZ_EMOTES='${JSON.stringify(ffz)}', BTTV_EMOTES='${JSON.stringify(bttv)}' WHERE CHANNELNAME ='${channel}'`
 	return await query(command)
