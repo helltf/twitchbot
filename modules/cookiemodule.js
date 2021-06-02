@@ -4,6 +4,7 @@ hb.watchclient.on("action",(channel,user,message,self)=>{
     if(user["user-id"]!=425363834) return
     channel = channel.replace("#","")
     if(message.startsWith("[Cookies]")){
+        console.log(message)
         let username =  message.match(/(?<=]\s)[^[].+(?=\s->)/)[0]
         let amount = message.match(/(?<=\().+(?=\))/)
         if(!amount[0]) return
