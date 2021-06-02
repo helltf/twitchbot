@@ -169,7 +169,6 @@ module.exports.addNewCookieReset = async(username,channel)=>{
 	return await query(command)
 }
 module.exports.addNewCookieEvent = async(username, amount, channel)=>{
-	if(!amount) amount = 0
 	let command = `INSERT INTO COOKIES (USERNAME, AMOUNT, TIME, CHANNEL) VALUES ('${username}','${amount}','${Date.now()}','${channel}')`
 	return await query(command)
 }
