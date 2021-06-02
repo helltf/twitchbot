@@ -165,11 +165,11 @@ module.exports.getNotifyMessage = async (event,channel)=>{
 	return result[0][event.toUpperCase()]
 }
 module.exports.addNewCookieReset = async(username)=>{
-	let command = `INSERT INTO COOKIE_RESET (username, TIME) VALUES('${username}','${Date.now()}')`
+	let command = `INSERT INTO COOKIE_RESET (username, TIME, CHANNEL) VALUES('${username}','${Date.now()}','${channel}')`
 	return await query(command)
 }
-module.exports.addNewCookieEvent = async(username, amount)=>{
-	let command = `INSERT INTO COOKIES (USERNAME, AMOUNT, TIME) VALUES ('${username}','${amount}',${Date.now()})`
+module.exports.addNewCookieEvent = async(username, amount, channel)=>{
+	let command = `INSERT INTO COOKIES (USERNAME, AMOUNT, TIME, CHANNEL) VALUES ('${username}','${amount}','${Date.now()}','${channel}')`
 	return await query(command)
 }
 module.exports.updateEmotes = async (channel, ffz, bttv) => {
