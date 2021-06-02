@@ -165,9 +165,7 @@ module.exports.getNotifyMessage = async (event,channel)=>{
 	return result[0][event.toUpperCase()]
 }
 module.exports.updateEmotes = async (channel, ffz, bttv) => {
-	let command = `UPDATE EMOTES SET FFZ_EMOTES='${JSON.stringify(
-		ffz
-	)}',BTTV_EMOTES='${JSON.stringify(bttv)}' WHERE CHANNELNAME ='${channel}'`
+	let command = `UPDATE EMOTES SET FFZ_EMOTES='${JSON.stringify(ffz)}', BTTV_EMOTES='${JSON.stringify(bttv)}' WHERE CHANNELNAME ='${channel}'`
 	return await query(command)
 }
 module.exports.addNewSuggestion = async (suggestionId, user_id, suggestion) => {
