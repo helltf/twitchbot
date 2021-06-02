@@ -164,7 +164,7 @@ module.exports.getNotifyMessage = async (event,channel)=>{
 	if(!result) return undefined
 	return result[0][event.toUpperCase()]
 }
-module.exports.addNewCookieReset = async(username)=>{
+module.exports.addNewCookieReset = async(username,channel)=>{
 	let command = `INSERT INTO COOKIE_RESET (username, TIME, CHANNEL) VALUES('${username}','${Date.now()}','${channel}')`
 	return await query(command)
 }
