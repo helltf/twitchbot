@@ -13,7 +13,7 @@ CHATSTATS|1|user channel|Checks the chatterlist of the streamer|none|
 COLORHISTORY|1|none|The bot will send a message containing your 10 latest colorchanges and the time between your latest change and now|username|
 COMMANDINFO|1|command|Gives you an info about the given command|none|
 COMMANDS|1|none|Gives you a list containing all available commands|none|
-CUSTOMIZE|1|event|Customize the notify messages in this channel. use ${value}/${event}/${streamer} for values|none|
+CUSTOMIZE|2|event, message|Customize the notify messages in this channel. use ${value}/${event}/${streamer} for values|none|
 DISABLEMESSAGES|2|none|Used to disallow messages send by the bot in the current channel|none|
 EMOTEGAME|1|none|Starts a game of hangman with thirdparty emotes|none|
 EMOTEGAMESTATS|1|none|Provides your stats for emotegames|username|
