@@ -38,6 +38,7 @@ RPSPLAYERGAME|1|player|Play a game of rps|none|
 RPSSTATS|1|none|Provides your stats for rps|username|
 SEARCHUSER|4|username|Search for a certain user in the database|none|
 SETPERMISSIONS|4|username permissionlevel|Sets the permissionslevel to the given level for a given user|none|
+STATS|1|stats to check for|Provides your stats for cookie/rps/emotegame|user|
 SUGGEST|1|suggestion|Suggest something for helltfbot|none|
 TIMEOUTSEARCH|1|user|Searches for the last timeout for a certain user. Only tracks timeouts longer than 300s|channel|
 TRACK|1|channel|Used to make the watch client join a new channel to track|none|
