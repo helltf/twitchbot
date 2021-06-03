@@ -414,6 +414,18 @@ module.exports.getUserInfo = async username => {
 		register_time: REGISTER_TIME
 	}
 }
+module.exports.getCookieStats = async (username)=>{
+	let command = `SELECT * FROM COOKIES WHERE  USERNAME = '${username}' ORDER BY TIME DESC`
+	let result = await query(command)
+	if(!result) return undefined
+	return result
+}
+module.exports.getCookieResetStats = async (username)=>{
+	let command = `SELECT * FROM COOKIE_RESET WHERE  USERNAME = '${username}'`
+	let result = await query(command)
+	if(!result) return undefined
+	return result
+}
 module.exports.updateCommandValue = async (commandname, newvalue, key) => {
 	let command = `UPDATE COMMANDS SET ${key.toUpperCase()}='${newvalue}' WHERE NAME='${commandname}'`
 	console.log(
