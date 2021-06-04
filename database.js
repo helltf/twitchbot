@@ -377,7 +377,7 @@ module.exports.updateNotifyChannelForUser = async (
 }
 module.exports.getAllWatchChannels = async () => {
 	let comand = `SELECT * FROM WATCHCHANNELS`
-	return await query(comand)
+	return (await query(comand)).map(e=>e.CHANNEL_NAME)
 }
 module.exports.isWatchChannel = async channel => {
 	let command = `SELECT * FROM WATCHCHANNELS WHERE CHANNEL_NAME ='${channel}'`
