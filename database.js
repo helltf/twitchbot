@@ -209,8 +209,8 @@ module.exports.getPingUser = async () => {
 		}
 	})
 }
-module.exports.updateUser  = async ({["user-id"]:id, username, color}) =>{
-	let command = `UPDATE TWITCH_USER SET USERNAME ='${username}', COLOR = '${color}' WHERE TWITCH_ID = '${id}'`
+module.exports.updateUser  = async ({["user-id"]:id, username, color, ["display-name"]: displayname}) =>{
+	let command = `UPDATE TWITCH_USER SET USERNAME ='${username}', COLOR = '${color}', DISPLAYNAME='${displayname}' WHERE TWITCH_ID = '${id}'`
 	return await query(command)
 }
 module.exports.getLastPing = async username => {
@@ -335,9 +335,9 @@ module.exports.deleteCommand = async commandname => {
 	return await query(command)
 }
 module.exports.addNewUser = async user => {
-	let command = `INSERT INTO TWITCH_USER (USERNAME, TWITCH_ID, COLOR,PERMISSIONS,REGISTER_TIME) VALUES ('${
+	let command = `INSERT INTO TWITCH_USER (USERNAME, TWITCH_ID, COLOR,PERMISSIONS,REGISTER_TIME, DISPLAYNAME) VALUES ('${
 		user.username
-	}', '${user['user-id']}', '${user.color}','1','${Date.now()}')`
+	}', '${user['user-id']}', '${user.color}','1','${Date.now()}','${user["display-name"]}')`
 	return await query(command)
 }
 module.exports.deleteUser = async user_id => {
