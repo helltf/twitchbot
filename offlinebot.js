@@ -12,7 +12,6 @@ const livestatus = require("./lib/notify/updatelivestatus")
 const ATupdater = require("./lib/functions/ATHandler").updateAT
 const updateCommands = require("./lib/functions/updateCommandsDatabase");
 const { initEmotes ,updateEmotes} = require('./lib/notify/updateemotes');
-
 global.games = {}
 games.rps = []
 games.emote = []
@@ -27,7 +26,7 @@ hb.database = require("./database")
 hb.util = require("./lib/functions/functions")
 hb.suggestions = []
 
-requiredir("./modules/")
+const modules = requiredir("./modules/")
 
 const start = async()=>{
     await database.connect(process.env.ENVIRONMENT);
@@ -36,11 +35,12 @@ const start = async()=>{
     await updateReadme();
     await hb.startClient()
     await hb.watchclient.startwatchClient();
+    //modules.vipmodule()
     await ATupdater()
     if(process.env.ENVIRONMENT === "dev") return
 
     startLiveUpdates()
-    startEmoteUpdates()
+    //startEmoteUpdates()
     setInterval(ATupdater,3300000)
 }
 start();
