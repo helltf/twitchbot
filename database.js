@@ -203,13 +203,16 @@ module.exports.getPingUser = async () => {
 	if (!result) return undefined
 	return result.map(element => {
 		return {
-			username: element.USERNAME,
+			username: element.USERNAME.toLowerCase(),
 			user_id: element.TWITCH_ID,
 			regex: element.REGEX
 		}
 	})
 }
-module.exports.getPingRegex = async id => {}
+module.exports.updateUser  = async ({["user-id"]:id, username, color}) =>{
+	let command = `UPDATE TWITCH_USER SET USERNAME ='${username}', COLOR = '${color}' WHERE TWITCH_ID = '${id}'`
+	return await query(command)
+}
 module.exports.getLastPing = async username => {
 	let command = `SELECT * FROM LASTPING JOIN TWITCH_USER ON LASTPING.TWITCH_ID = TWITCH_USER.TWITCH_ID WHERE TWITCH_USER.USERNAME='${username}'`
 	let result = await query(command)
