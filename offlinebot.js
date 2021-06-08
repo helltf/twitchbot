@@ -40,7 +40,7 @@ const start = async()=>{
     if(process.env.ENVIRONMENT === "dev") return
 
     startLiveUpdates()
-    //startEmoteUpdates()
+    startEmoteUpdates()
     setInterval(ATupdater,3300000)
 }
 start();
