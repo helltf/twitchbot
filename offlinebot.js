@@ -37,10 +37,10 @@ const start = async()=>{
     await hb.watchclient.startwatchClient();
     //modules.vipmodule()
     await ATupdater()
-    if(process.env.ENVIRONMENT === "dev") return
+  // if(process.env.ENVIRONMENT === "dev") return
 
     startLiveUpdates()
-    startEmoteUpdates()
+   // startEmoteUpdates()
     setInterval(ATupdater,3300000)
 }
 start();
