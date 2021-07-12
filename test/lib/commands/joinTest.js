@@ -20,7 +20,7 @@ describe("Join",()=>{
         assert.isTrue(databaseChannels.some((entry)=>{ return entry.CHANNEL_NAME===channel}))
         assert.equal(message,`Successfully joined the channel: ${channel}`)
         await hb.client.part(channel)
-        await database.custom(`DELETE FROM CHANNELS WHERE CHANNEL_NAME='${channel}'`)
+        await database.custom(`DELETE FROM channels WHERE CHANNEL_NAME='${channel}'`)
     }).timeout(5000)
 })
 

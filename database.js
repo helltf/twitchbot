@@ -281,17 +281,17 @@ module.exports.deleteBan = async (channel, username) => {
 	return await query(command)
 }
 module.exports.setCurrentlyConnected = async (value, channel) => {
-	let command = `UPDATE CHANNELS SET CURR_CONNECTED ='${value}' WHERE CHANNEL_NAME = '${channel}'`
+	let command = `UPDATE channels SET CURR_CONNECTED ='${value}' WHERE CHANNEL_NAME = '${channel}'`
 	return await query(command)
 }
 
 module.exports.isConnected = async channel => {
-	let command = `SELECT CURR_CONNECTED FROM CHANNELS WHERE CHANNEL_NAME = '${channel}'`
+	let command = `SELECT CURR_CONNECTED FROM channels WHERE CHANNEL_NAME = '${channel}'`
 	let result = await query(command)
 	return result != undefined && result[0].CURR_CONNECTED != 0
 }
 module.exports.getAllowed = async channel => {
-	let command = `SELECT ALLOWED,ALLOWED_LIVE FROM CHANNELS WHERE CHANNEL_NAME='${channel}'`
+	let command = `SELECT ALLOWED,ALLOWED_LIVE FROM channels WHERE CHANNEL_NAME='${channel}'`
 	let response = await query(command)
 	if (!response)
 		return {
@@ -305,11 +305,11 @@ module.exports.getAllowed = async channel => {
 	}
 }
 module.exports.setDisabledForChannel = async channel => {
-	let command = `UPDATE CHANNELS SET ALLOWED='0' WHERE CHANNEL_NAME='${channel}'`
+	let command = `UPDATE channels SET ALLOWED='0' WHERE CHANNEL_NAME='${channel}'`
 	return await query(command)
 }
 module.exports.setEnabledForChannel = async channel => {
-	let command = `UPDATE CHANNELS SET ALLOWED='1' WHERE CHANNEL_NAME='${channel}'`
+	let command = `UPDATE channels SET ALLOWED='1' WHERE CHANNEL_NAME='${channel}'`
 	return await query(command)
 }
 module.exports.setPermissionsForUser = async (username, permissionlvl) => {
@@ -363,11 +363,11 @@ module.exports.getPermissionsForUser = async user_id => {
 	return undefined
 }
 module.exports.getConnectedChannels = async () => {
-	let command = `SELECT * FROM CHANNELS WHERE CURR_CONNECTED='1'`
+	let command = `SELECT * FROM channels WHERE CURR_CONNECTED='1'`
 	return await query(command)
 }
 module.exports.getConnectedChannel = async channel => {
-	let command = `SELECT * FROM CHANNELS WHERE CURR_CONNECTED='1' AND CHANNEL_NAME ='${channel}'`
+	let command = `SELECT * FROM channels WHERE CURR_CONNECTED='1' AND CHANNEL_NAME ='${channel}'`
 	return await query(command)
 }
 module.exports.updateNotifyChannelForUser = async (
@@ -613,19 +613,6 @@ module.exports.getLeaderboardPositionEmoteGame = async user_id => {
 }
 const query = command => {
 	return new Promise((resolve, reject) => {
-		if (process.env.ENVIRONMENT === 'test') {
-			testdatabase.query(command, (error, result) => {
-				if (error) {
-					console.log(error)
-					reject(error)
-				}
-				if (result.length != 0) {
-					resolve(result)
-				} else {
-					resolve(undefined)
-				}
-			})
-		} else {
 			twitchdatabase.query(command, (error, result) => {
 				if (error) {
 					console.log(error)
@@ -637,7 +624,6 @@ const query = command => {
 					resolve(undefined)
 				}
 			})
-		}
 	})
 }
 
