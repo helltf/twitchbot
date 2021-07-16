@@ -55,6 +55,7 @@ module.exports.connect = ENVIRONMENT => {
 		}
 	})
 }
+
 const getLastEmotes = async (event, channel) => {
 	event = event.toUpperCase()
 	let command = `SELECT LAST_${event} FROM EMOTES WHERE CHANNELNAME = '${channel}'`
@@ -317,16 +318,16 @@ module.exports.setPermissionsForUser = async (username, permissionlvl) => {
 	return await query(command)
 }
 module.exports.incrementCommandCounter = async commandname => {
-	let command = `SELECT COUNTER FROM COMMANDS WHERE NAME='${commandname}'`
+	let command = `SELECT COUNTER FROM commands WHERE NAME='${commandname}'`
 	let response = await query(command)
 	let count = response[0].COUNTER
-	command = `UPDATE COMMANDS SET COUNTER='${
+	command = `UPDATE commands SET COUNTER='${
 		count + 1
 	}' WHERE NAME ='${commandname}'`
 	return await query(command)
 }
 module.exports.deleteCommand = async commandname => {
-	let command = `DELETE FROM COMMANDS WHERE NAME = '${commandname}'`
+	let command = `DELETE FROM commands WHERE NAME = '${commandname}'`
 	console.log(
 		`${chalk.hex('#A0522D').bold('[COMMAND]')} ${chalk.red(
 			'[REMOVED]'
@@ -349,7 +350,7 @@ module.exports.userIsRegisteredForColorHistory = async user_id => {
 	return (await query(command)) != undefined
 }
 module.exports.getCommands = async () => {
-	let command = `SELECT * FROM COMMANDS`
+	let command = `SELECT * FROM commands`
 	return await query(command)
 }
 module.exports.isUserRegistered = async user_id => {
@@ -430,7 +431,7 @@ module.exports.getCookieResetStats = async (username)=>{
 	return result
 }
 module.exports.updateCommandValue = async (commandname, newvalue, key) => {
-	let command = `UPDATE COMMANDS SET ${key.toUpperCase()}='${newvalue}' WHERE NAME='${commandname}'`
+	let command = `UPDATE commands SET ${key.toUpperCase()}='${newvalue}' WHERE NAME='${commandname}'`
 	console.log(
 		`${chalk.hex('#A0522D').bold('[COMMAND]')} ${chalk
 			.hex('#3f888f')
@@ -439,7 +440,7 @@ module.exports.updateCommandValue = async (commandname, newvalue, key) => {
 	return await query(command)
 }
 module.exports.addNewCommand = async (commandname, commandinfo) => {
-	let command = `INSERT INTO COMMANDS (NAME,COUNTER,REQUIRED_PERMISSIONS,DESCRIPTION,REQUIRED_PARAMETERS,OPTIONAL_PARAMETERS) VALUES ('${commandname.toUpperCase()}','0','${
+	let command = `INSERT INTO commands (NAME,COUNTER,REQUIRED_PERMISSIONS,DESCRIPTION,REQUIRED_PARAMETERS,OPTIONAL_PARAMETERS) VALUES ('${commandname.toUpperCase()}','0','${
 		commandinfo.required_permissions
 	}','${commandinfo.description}','${commandinfo.required_parameters}','${
 		commandinfo.optional_parameters
