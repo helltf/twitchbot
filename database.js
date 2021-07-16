@@ -431,6 +431,7 @@ module.exports.getCookieResetStats = async (username)=>{
 	return result
 }
 module.exports.updateCommandValue = async (commandname, newvalue, key) => {
+	if(key==="id") return
 	let command = `UPDATE commands SET ${key.toUpperCase()}='${newvalue}' WHERE NAME='${commandname}'`
 	console.log(
 		`${chalk.hex('#A0522D').bold('[COMMAND]')} ${chalk
