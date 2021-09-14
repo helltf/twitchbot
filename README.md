@@ -28,6 +28,7 @@ LYRICS|1|song and creator|Retrieves the lyrics for a given song|none|
 MOVENOTIFY|0|streamer channel|Moves your notifications to another channel|none|
 NOTIFY|1|streamer event|Enables notifications for a given streamern on an certain event. Available events: live/offline/title/game/all/emote_removed/emote_added|none|
 PING|1|none|Just a Ping command 4Head|none|
+RATELIMIT|4|none|Check the ratelimit|none|
 REGISTER|1|none|Deprecated, No longer required|none|
 REGISTERCOLOR|1|none|Used to register yourself for colorhistory. The bot will save your 10 latest colors and the time of your last change|none|
 REMOVED|1||Give the latest removed emotes for the channel|channel|
