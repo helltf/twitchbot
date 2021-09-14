@@ -14,8 +14,10 @@ const testdatabase = mysql.createConnection({
 	host: process.env.HOST,
 	user: process.env.USER,
 	password: process.env.PASSWORD,
-	database: process.env.TESTDATABASE
+	database: process.env.TESTDATABASE,
+	charset: 'utf8mb4'
 })
+
 module.exports.connect = ENVIRONMENT => {
 	return new Promise((resolve, reject) => {
 		if (ENVIRONMENT != 'test') {
@@ -613,6 +615,12 @@ module.exports.getLeaderboardPositionEmoteGame = async user_id => {
 	let allStats = await query(command)
 	return allStats.findIndex(user => user.TWITCH_ID === parseInt(user_id)) + 1
 }
+module.exports.getChannelsRequiredUpdates = async() =>{
+	let command = `SELECT * FROM CHANNEL_INFO WHERE NEXT_UPDATE < ${Date.now()}`
+	return await query(command)
+}
+
+
 const query = command => {
 	return new Promise((resolve, reject) => {
 			twitchdatabase.query(command, (error, result) => {
