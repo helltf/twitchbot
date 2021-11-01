@@ -477,7 +477,7 @@ module.exports.selectWhere = selectWhere = async (
 
 module.exports.updateWhere = async (table, set, setvalue, where, value) => {
 	if(!setvalue) return
-	let command = `UPDATE ${table} SET ${set} ='${setvalue}'WHERE ${where} = '${value}'`
+	let command = `UPDATE ${table} SET ${set} =${mysql.escape(value)} WHERE ${where} = ${mysql.escape(value)}`
 	return await query(command)
 }
 
@@ -620,7 +620,6 @@ module.exports.getChannelsRequiredUpdates = async() =>{
 	return await query(command)
 }
 
-
 const query = command => {
 	return new Promise((resolve, reject) => {
 			twitchdatabase.query(command, (error, result) => {
@@ -638,3 +637,4 @@ const query = command => {
 }
 
 module.exports.getLastEmotes = getLastEmotes
+module.exports.query = query
