@@ -24,6 +24,8 @@ LASTBAN|1|none|Searches for the last ban occured in the given channel|channel|
 LASTPING|1|user|Gets the information about the lastping for an user|channel|
 LASTTIMEOUT|1|none|Searches for the last timeout occured in the given channel. Only tracks timeouts longer than 300s|channel|
 LEAVE|3|channel|Used to make the mainclient leave a channel|none|
+LIMITNOTIFICATION|1|none|Sets limits for notifications|channel|
+LIST|1|event|list your notifications for events|user|
 LYRICS|1|song and creator|Retrieves the lyrics for a given song|none|
 MOVENOTIFY|0|streamer channel|Moves your notifications to another channel|none|
 NOTIFY|1|streamer event|Enables notifications for a given streamern on an certain event. Available events: live/offline/title/game/all/emote_removed/emote_added|none|
