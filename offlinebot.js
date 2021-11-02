@@ -12,7 +12,6 @@ const livestatus = require("./lib/notify/updatelivestatus")
 const ATupdater = require("./lib/functions/ATHandler").updateAT
 const updateCommands = require("./lib/functions/updateCommandsDatabase");
 const { initEmotes ,updateEmotes} = require('./lib/notify/updateemotes');
-const notifymessage = require('./lib/notify/notifymessage');
 global.games = {}
 games.rps = []
 games.emote = []
@@ -22,12 +21,13 @@ hb.client = require('./lib/client.js').client
 hb.sendAllowedMessage = require('./lib/client.js').sendAllowedMessage
 hb.startClient = require("./lib/client").startClient
 hb.watchclient = require("./lib/watchclient").watchclient
-hb.watchclient.startwatchClient = require("./lib/watchclient").startwatchClient
+hb.watchclient.startWatchClient = require("./lib/watchclient").startWatchClient
 hb.database = require("./database")
 hb.util = require("./lib/functions/functions")
 hb.suggestions = []
 hb.lodash = lodash;
 hb.ratelimit = undefined;
+hb.queryBuilder = require("./lib/classes/queryBuilder").QueryBuilder
 
 const modules = requiredir("./modules/")
 
@@ -37,7 +37,7 @@ const start = async()=>{
     await updateCommands();
     await updateReadme();
     await hb.startClient()
-    await hb.watchclient.startwatchClient();
+    await hb.watchclient.startWatchClient();
     //modules.vipmodule()
     await ATupdater()
     if(process.env.ENVIRONMENT === "dev") return
@@ -48,9 +48,9 @@ const start = async()=>{
 start();
 const startLiveUpdates  =async ()=>{
     await livestatus.init()
-    setInterval(livestatus.update,30000)
+    setInterval(livestatus.update, 30000)
 }
 const startEmoteUpdates = async ()=>{
     await initEmotes()
-    setInterval( updateEmotes,5000)
+    setInterval( updateEmotes, 5000)
 }
