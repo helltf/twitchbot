@@ -81,7 +81,7 @@ module.exports.addNewCustomMessage = async(channel, event, newMessage) =>{
 	let command = `INSERT INTO NOTIFY_MESSAGE (CHANNEL_NAME, ${event}) VALUES ('${channel}',${mysql.escape(newMessage.replace("'","\'"))})`
 	return await query(command)
 }
-module.exports.updateChannelInfoValue = async(key,value,channelname)=>{
+module.exports.updateChannelInfoValue = async(key, value, channelname)=>{
 	let command =`UPDATE CHANNEL_INFO SET ${key}=${mysql.escape(value)} WHERE CHANNEL_NAME ='${channelname}'`
 	return await query(command)
 }
@@ -106,7 +106,7 @@ module.exports.getSuggestionForUser = async id => {
 	return result.length
 }
 module.exports.insertNewPing = async(user_id, channel, message, by_user)=>{
-	let command = `INSERT INTO PINGS (TWITCH_ID,LAST_PING_CHANNEL, LAST_PING_TIME,BY_USER, MESSAGE) VALUES('${user_id}','${channel}','${Date.now()}','${by_user}',${mysql.escape(message)})`
+	let command = `INSERT INTO PINGS (TWITCH_ID, LAST_PING_CHANNEL, LAST_PING_TIME, BY_USER, MESSAGE) VALUES('${user_id}','${channel}','${Date.now()}','${by_user}',${mysql.escape(message)})`
 	return await query(command)
 }
 module.exports.getLatestSuggestionId = async () => {
@@ -127,7 +127,7 @@ module.exports.emotesGetsUpdated = async streamer => {
 	return (await query(command)) != undefined
 }
 module.exports.addNewChannelForEmoteUpdates = async (streamer, [ffz, bttv]) => {
-	let command = `INSERT INTO EMOTES (CHANNELNAME,FFZ_EMOTES,BTTV_EMOTES,LAST_ADDED,LAST_REMOVED) VALUES ('${streamer}','${JSON.stringify(
+	let command = `INSERT INTO EMOTES (CHANNELNAME, FFZ_EMOTES, BTTV_EMOTES, LAST_ADDED, LAST_REMOVED) VALUES ('${streamer}','${JSON.stringify(
 		ffz
 	)}','${JSON.stringify(bttv)}','{}','{}')`
 	return await query(command)
@@ -156,18 +156,18 @@ module.exports.updateChannelInfo = async ({
 	game_id,
 	broadcaster_login
 }) => {
-	let command = `UPDATE CHANNEL_INFO SET LIVE=${mysql.escape(is_live)},TITLE=${mysql.escape(
+	let command = `UPDATE CHANNEL_INFO SET LIVE=${mysql.escape(is_live)}, TITLE=${mysql.escape(
 		title.replace("'","\'")
-	)},GAME_ID='${game_id}', LIVE_COOLDOWN='${Date.now()}',TITLE_COOLDOWN='${Date.now()}',GAME_COOLDOWN='${Date.now()}' WHERE CHANNEL_NAME='${broadcaster_login}'`
+	)}, GAME_ID='${game_id}', LIVE_COOLDOWN='${Date.now()}', TITLE_COOLDOWN='${Date.now()}', GAME_COOLDOWN='${Date.now()}' WHERE CHANNEL_NAME='${broadcaster_login}'`
 	return await query(command)
 }
-module.exports.getNotifyMessage = async (event,channel)=>{
+module.exports.getNotifyMessage = async (event, channel)=>{
 	let command = `SELECT * FROM NOTIFY_MESSAGE WHERE CHANNEL_NAME = '${channel}'`
 	let result =await query(command)
 	if(!result) return undefined
 	return result[0][event.toUpperCase()]
 }
-module.exports.addNewCookieReset = async(username,channel)=>{
+module.exports.addNewCookieReset = async(username, channel)=>{
 	let command = `INSERT INTO COOKIE_RESET (username, TIME, CHANNEL) VALUES('${username}','${Date.now()}','${channel}')`
 	return await query(command)
 }
@@ -181,7 +181,7 @@ module.exports.updateEmotes = async (channel, ffz, bttv) => {
 	return await query(command)
 }
 module.exports.addNewSuggestion = async (suggestionId, user_id, suggestion) => {
-	let command = `INSERT INTO SUGGESTIONS (ID,SUGGESTION,TIME,TWITCH_ID) VALUES ('${suggestionId}','${suggestion}','${Date.now()}','${user_id}')`
+	let command = `INSERT INTO SUGGESTIONS (ID, SUGGESTION, TIME, TWITCH_ID) VALUES ('${suggestionId}','${suggestion}','${Date.now()}','${user_id}')`
 	return await query(command)
 }
 
@@ -240,7 +240,7 @@ module.exports.isRegisteredForColorHistory = async id => {
 	return (await query(command)) != undefined
 }
 module.exports.addUserToPing = async (id, regex) => {
-	let command = `INSERT INTO LASTPING (TWITCH_ID,COUNTER,REGEX) VALUES ('${id}','1','${regex}')`
+	let command = `INSERT INTO LASTPING (TWITCH_ID, COUNTER, REGEX) VALUES ('${id}','1','${regex}')`
 	return await query(command)
 }
 module.exports.updateLastPing = async (
@@ -253,7 +253,7 @@ module.exports.updateLastPing = async (
 	let [{COUNTER: counter}] = await query(command)
 	let update = `UPDATE LASTPING SET COUNTER = '${
 		counter + 1
-	}', LAST_PING_CHANNEL = '${channel}',LAST_PING_TIME='${Date.now()}',MATCHED=${mysql.escape(
+	}', LAST_PING_CHANNEL = '${channel}', LAST_PING_TIME='${Date.now()}', MATCHED=${mysql.escape(
 		matchedWord
 	)}, BY_USER='${byUser}' WHERE TWITCH_ID='${user_id}'`
 	return await query(update)
@@ -268,7 +268,7 @@ module.exports.addNewNotifyEntryAllEvents = async (
 	channel,
 	streamer
 ) => {
-	let command = `INSERT INTO NOTIFY (TWITCH_ID,CHANNEL,STREAMER,LIVE,OFFLINE,TITLE,GAME) VALUES ('${user_id}','${channel}','${streamer}','1','1','1','1')`
+	let command = `INSERT INTO NOTIFY (TWITCH_ID, CHANNEL, STREAMER, LIVE, OFFLINE, TITLE, GAME) VALUES ('${user_id}','${channel}','${streamer}','1','1','1','1')`
 	return await query(command)
 }
 module.exports.addNewNotifyEntryNoEvents = async (
@@ -276,7 +276,7 @@ module.exports.addNewNotifyEntryNoEvents = async (
 	channel,
 	streamer
 ) => {
-	let command = `INSERT INTO NOTIFY (TWITCH_ID,CHANNEL,STREAMER,LIVE,OFFLINE,TITLE,GAME,EMOTE_ADDED,EMOTE_REMOVED) VALUES ('${user_id}','${channel}','${streamer}','0','0','0','0','0','0')`
+	let command = `INSERT INTO NOTIFY (TWITCH_ID, CHANNEL, STREAMER, LIVE, OFFLINE, TITLE, GAME, EMOTE_ADDED, EMOTE_REMOVED) VALUES ('${user_id}','${channel}','${streamer}','0','0','0','0','0','0')`
 	return await query(command)
 }
 module.exports.deleteBan = async (channel, username) => {
@@ -294,7 +294,7 @@ module.exports.isConnected = async channel => {
 	return result != undefined && result[0].CURR_CONNECTED != 0
 }
 module.exports.getAllowed = async channel => {
-	let command = `SELECT ALLOWED,ALLOWED_LIVE FROM channels WHERE CHANNEL_NAME='${channel}'`
+	let command = `SELECT ALLOWED, ALLOWED_LIVE FROM channels WHERE CHANNEL_NAME='${channel}'`
 	let response = await query(command)
 	if (!response)
 		return {
@@ -338,7 +338,7 @@ module.exports.deleteCommand = async commandname => {
 	return await query(command)
 }
 module.exports.addNewUser = async user => {
-	let command = `INSERT INTO TWITCH_USER (USERNAME, TWITCH_ID, COLOR,PERMISSIONS,REGISTER_TIME, DISPLAYNAME) VALUES ('${
+	let command = `INSERT INTO TWITCH_USER (USERNAME, TWITCH_ID, COLOR, PERMISSIONS, REGISTER_TIME, DISPLAYNAME) VALUES ('${
 		user.username
 	}', '${user['user-id']}', '${user.color}','1','${Date.now()}','${user["display-name"]}')`
 	return await query(command)
@@ -443,7 +443,7 @@ module.exports.updateCommandValue = async (commandname, newvalue, key) => {
 	return await query(command)
 }
 module.exports.addNewCommand = async (commandname, commandinfo) => {
-	let command = `INSERT INTO commands (NAME,COUNTER,REQUIRED_PERMISSIONS,DESCRIPTION,REQUIRED_PARAMETERS,OPTIONAL_PARAMETERS) VALUES ('${commandname.toUpperCase()}','0','${
+	let command = `INSERT INTO commands (NAME, COUNTER, REQUIRED_PERMISSIONS, DESCRIPTION, REQUIRED_PARAMETERS, OPTIONAL_PARAMETERS) VALUES ('${commandname.toUpperCase()}','0','${
 		commandinfo.required_permissions
 	}','${commandinfo.description}','${commandinfo.required_parameters}','${
 		commandinfo.optional_parameters
@@ -513,7 +513,7 @@ module.exports.custom = async command => {
 	return await query(command)
 }
 module.exports.addNewBan = async (channel, username) => {
-	let command = `INSERT INTO BANNED_USER (USERNAME,CHANNEL,TIME) VALUES ('${username}','${channel}','${Date.now()}')`
+	let command = `INSERT INTO BANNED_USER (USERNAME, CHANNEL, TIME) VALUES ('${username}','${channel}','${Date.now()}')`
 	return await query(command)
 }
 
@@ -526,7 +526,7 @@ module.exports.getColorForUser = async user_id => {
 	return undefined
 }
 module.exports.addNewChannelForAPIUpdates = async (streamer, currentDate) => {
-	let command = `INSERT INTO CHANNEL_INFO (CHANNEL_NAME,LIVE,TITLE,GAME_ID,NEXT_UPDATE,LIVE_COOLDOWN,TITLE_COOLDOWN,GAME_COOLDOWN) VALUES ('${streamer}','${undefined}','${undefined}','${-1}','${currentDate}','${currentDate}','${currentDate}','${currentDate}')`
+	let command = `INSERT INTO CHANNEL_INFO (CHANNEL_NAME, LIVE, TITLE, GAME_ID, NEXT_UPDATE, LIVE_COOLDOWN, TITLE_COOLDOWN, GAME_COOLDOWN) VALUES ('${streamer}','${undefined}','${undefined}','${-1}','${currentDate}','${currentDate}','${currentDate}','${currentDate}')`
 	return await query(command)
 }
 module.exports.getNotifyCooldownForEvent = async (event, channelname) => {
@@ -555,7 +555,7 @@ module.exports.addNewWatchChannel = async channel => {
 	return await query(command)
 }
 module.exports.addNewTimeout = async (username, channel, duration) => {
-	let command = `INSERT INTO TIMEOUT_USER (USERNAME,CHANNEL,TIME,DURATION) VALUES ('${username}','${channel}','${Date.now()}','${duration}')`
+	let command = `INSERT INTO TIMEOUT_USER (USERNAME, CHANNEL, TIME, DURATION) VALUES ('${username}','${channel}','${Date.now()}','${duration}')`
 	return await query(command)
 }
 module.exports.removeWatchChannel = async channel => {
@@ -583,7 +583,7 @@ module.exports.updateRegexForPing = async (id, regex) => {
 	return await query(command)
 }
 module.exports.addNewRecordToColorHistory = async (user_id, currentColor) => {
-	let command = `INSERT INTO COLOR_HISTORY (TWITCH_ID,COLOR_HIST,REGISTER_TIME,LAST_CHANGE) VALUES ('${user_id}','["${currentColor}"]','${Date.now()}','${Date.now()}')`
+	let command = `INSERT INTO COLOR_HISTORY (TWITCH_ID, COLOR_HIST, REGISTER_TIME, LAST_CHANGE) VALUES ('${user_id}','["${currentColor}"]','${Date.now()}','${Date.now()}')`
 	return await query(command)
 }
 module.exports.getRPSStatsForUserID = async user_id => {
@@ -636,5 +636,24 @@ const query = command => {
 	})
 }
 
+
+module.exports.BANNED_USER =  "BANNED_USER",
+module.exports.CHANNELS =  "channels",
+module.exports.CHANNEL_INFO =  "CHANNEL_INFO",
+module.exports.COLOR_HISTORY =  "COLOR_HISTORY",
+module.exports.COMMANDS =  "commands",
+module.exports.COOKIES =  "COOKIES",
+module.exports.COOKIE_RESET =  "COOKIE_RESET",
+module.exports.EMOTEGAME_STATS =  "EMOTEGAME_STATS",
+module.exports.EMOTES =  "EMOTES",
+module.exports.IGNOED_PING_USER =  "IGNOED_PING_USER",
+module.exports.LASTPING =  "LASTPING",
+module.exports.NOTIFY =  "NOTIFY",
+module.exports.PINGS =  "PINGS",
+module.exports.RPS_STATS =  "RPS_STATS",
+module.exports.SUGGESTIONS =  "SUGGESTION",
+module.exports.TIMEOUT_USER =  "TIMOUT_USER",
+module.exports.TWITCH_USER =  "TWITCH_USER",
+module.exports.WATCHCHANNELS =  "WATCHCHANNELS"
 module.exports.getLastEmotes = getLastEmotes
 module.exports.query = query

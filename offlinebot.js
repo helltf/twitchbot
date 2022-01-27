@@ -11,7 +11,8 @@ const updateReadme = require("./lib/functions/updateReadMe")
 const livestatus = require("./lib/notify/updatelivestatus")
 const ATupdater = require("./lib/functions/ATHandler").updateAT
 const updateCommands = require("./lib/functions/updateCommandsDatabase");
-const { initEmotes ,updateEmotes} = require('./lib/notify/updateemotes');
+const { initEmotes , updateEmotes} = require('./lib/notify/updateemotes');
+const startuptest = require("./startuptest")
 global.games = {}
 games.rps = []
 games.emote = []
@@ -28,6 +29,8 @@ hb.suggestions = []
 hb.lodash = lodash;
 hb.ratelimit = undefined;
 hb.queryBuilder = require("./lib/classes/queryBuilder").QueryBuilder
+hb.regex = require("./lib/functions/regex")
+hb.escape = require("mysql").escape
 
 const modules = requiredir("./modules/")
 
@@ -36,14 +39,18 @@ const start = async()=>{
     if(process.env.ENVIRONMENT==="test") return 
     await updateCommands();
     await updateReadme();
+
     await hb.startClient()
     await hb.watchclient.startWatchClient();
+    startuptest()
     //modules.vipmodule()
     await ATupdater()
     if(process.env.ENVIRONMENT === "dev") return
     startLiveUpdates()
    // startEmoteUpdates()
-    setInterval(ATupdater,3300000)
+    setInterval(ATupdater, 3300000)
+
+    
 }
 start();
 const startLiveUpdates  =async ()=>{

@@ -11,12 +11,12 @@ after(async()=>{
     await hb.client.disconnect()
 })
 describe("Join",()=>{
-    it("Client joines a new channel",async()=>{
+    it("Client joines a new channel", async()=>{
         let channel = "pepegepaul"
-        let message = await join(undefined,undefined,[channel])
+        let message = await join(undefined, undefined,[channel])
         await timer(200)
         let databaseChannels = await database.getConnectedChannels()
-        assert.notEqual(hb.client.getChannels().length,0)
+        assert.notEqual(hb.client.getChannels().length, 0)
         assert.isTrue(databaseChannels.some((entry)=>{ return entry.CHANNEL_NAME===channel}))
         assert.equal(message,`Successfully joined the channel: ${channel}`)
         await hb.client.part(channel)
@@ -25,21 +25,21 @@ describe("Join",()=>{
 })
 
 describe("Join",()=>{
-    it("Client does not join a new channel if already connected",async()=>{
+    it("Client does not join a new channel if already connected", async()=>{
         let channel = "helltf"
-        assert.equal(hb.client.getChannels().length,1)
-        let message = await join(undefined,undefined,[channel])
-        assert.equal(hb.client.getChannels().length,1)
-        assert.equal((await database.getConnectedChannel(channel)).length,1)
+        assert.equal(hb.client.getChannels().length, 1)
+        let message = await join(undefined, undefined,[channel])
+        assert.equal(hb.client.getChannels().length, 1)
+        assert.equal((await database.getConnectedChannel(channel)).length, 1)
         assert.equal(message,"Sorry but I'm already in this channel!")
     }).timeout(5000)
 })
 describe("Join",()=>{
-    it("Client does not join a new channel if already connected",async()=>{
+    it("Client does not join a new channel if already connected", async()=>{
         let channel = "asdadsadsadad"
-        assert.equal(hb.client.getChannels().length,1)
-        let message = await join(undefined,undefined,[channel])
-        assert.equal(hb.client.getChannels().length,1)
+        assert.equal(hb.client.getChannels().length, 1)
+        let message = await join(undefined, undefined,[channel])
+        assert.equal(hb.client.getChannels().length, 1)
         assert.isUndefined(await database.getConnectedChannel(channel))
         assert.isTrue(message.startsWith(`Couldn't join the channel: ${channel} because`))
     }).timeout(5000)

@@ -1,6 +1,6 @@
 const database = require("../database")
 
-hb.watchclient.on("action",(channel,user,message,self)=>{
+hb.watchclient.on("action",(channel, user, message, self)=>{
     if(user["user-id"]!=425363834) return
     channel = channel.replace("#","")
     if(message.startsWith("[Cookies]")){
