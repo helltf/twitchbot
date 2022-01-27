@@ -28,6 +28,7 @@ LIMITNOTIFICATION|1|none|Sets limits for notifications|channel|
 LIST|1|event|list your notifications for events|user|
 LYRICS|1|song and creator|Retrieves the lyrics for a given song|none|
 MOVENOTIFY|0|streamer channel|Moves your notifications to another channel|none|
+NOTIFICATIONS|1|none|Will return list all of your notifications|none|
 NOTIFY|1|streamer event|Enables notifications for a given streamern on an certain event. Available events: live/offline/title/game/all/emote_removed/emote_added|none|
 PING|1|none|Just a Ping command 4Head|none|
 RATELIMIT|4|none|Check the ratelimit|none|
