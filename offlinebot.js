@@ -18,6 +18,7 @@ games.rps = []
 games.emote = []
 
 global.hb = {}
+hb.currentRateLimit = 800
 hb.client = require('./lib/client.js').client
 hb.sendAllowedMessage = require('./lib/client.js').sendAllowedMessage
 hb.startClient = require("./lib/client").startClient
@@ -55,7 +56,7 @@ const start = async()=>{
 start();
 const startLiveUpdates  =async ()=>{
     await livestatus.init()
-    setInterval(livestatus.update, 30000)
+    setInterval(livestatus.update, 60000)
 }
 const startEmoteUpdates = async ()=>{
     await initEmotes()
