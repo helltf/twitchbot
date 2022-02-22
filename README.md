@@ -48,3 +48,4 @@ TIMEOUTSEARCH|1|user|Searches for the last timeout for a certain user. Only trac
 TRACK|1|channel|Used to make the watch client join a new channel to track|none|
 TRACKCOUNTER|1|none|Gets the current amount of tracked channels across twitch|none|
 UNTRACK|1|channel|Used to make the watch client leave a channel|none|
+WORDLE|1|user|Searches for the last ban for a certain user|channel|
