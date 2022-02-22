@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+global.hb = {}
 const database = require('./database');
 const requiredir = require("require-dir")
 require('dotenv').config();
@@ -16,8 +16,9 @@ const startuptest = require("./startuptest")
 global.games = {}
 games.rps = []
 games.emote = []
+games.wordle = {}
 
-global.hb = {}
+
 hb.currentRateLimit = 800
 hb.client = require('./lib/client.js').client
 hb.sendAllowedMessage = require('./lib/client.js').sendAllowedMessage
@@ -32,6 +33,7 @@ hb.ratelimit = undefined;
 hb.queryBuilder = require("./lib/classes/queryBuilder").QueryBuilder
 hb.regex = require("./lib/functions/regex")
 hb.escape = require("mysql").escape
+hb.environment = process.env.ENVIRONMENT
 
 const modules = requiredir("./modules/")
 
@@ -54,7 +56,8 @@ const start = async()=>{
     
 }
 start();
-const startLiveUpdates  =async ()=>{
+const startLiveUpdates  = async ()=>{
+    if(hb.environment = "dev") return
     await livestatus.init()
     setInterval(livestatus.update, 60000)
 }
