@@ -57,7 +57,7 @@ const start = async()=>{
 }
 start();
 const startLiveUpdates  = async ()=>{
-    if(process.env.ENVIRONMENT = "dev") return
+    if(process.env.ENVIRONMENT === "dev") return
     await livestatus.init()
     setInterval(livestatus.update, 60000)
 }
