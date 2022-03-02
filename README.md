@@ -1,7 +1,7 @@
 # COMMANDS
 All available Commands:
 
-| COMMAND | PERMISSIONS | PARAMETERS(req) | PARAMETERS(opt) | DESCRIPTION |
+| COMMAND | PERMISSIONS | PARAMETERS(req) | DESCRIPTION | PARAMETERS(opt) |
 | :---:|:---:| :---:|:---:|:---:|
 ADDPING|1|none|Adds an additional ping for your account|none|
 ALLOWMESSAGES|2|none|Used to allow messages send by the bot in the current channel|none|
