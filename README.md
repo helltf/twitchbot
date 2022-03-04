@@ -13,7 +13,7 @@ CHATSTATS|1|user channel|Checks the chatterlist of the streamer|none|
 COLORHISTORY|1|none|The bot will send a message containing your 10 latest colorchanges and the time between your latest change and now|username|
 COMMANDINFO|1|command|Gives you an info about the given command|none|
 COMMANDS|1|none|Gives you a list containing all available commands|none|
-CUSTOMIZE|2|event, message|Customize the notify messages in this channel. use ${value}/${event}/${streamer} for values|none|
+CUSTOMIZE|2|event message|Customize the notify messages in this channel. use ${value}/${event}/${streamer} for values|none|
 DISABLEMESSAGES|2|none|Used to disallow messages send by the bot in the current channel|none|
 EMOTEGAME|1|none|Starts a game of hangman with thirdparty emotes|none|
 EMOTEGAMESTATS|1|none|Provides your stats for emotegames|username|
@@ -28,7 +28,7 @@ LIMITNOTIFICATION|1|none|Sets limits for notifications|channel|
 LIST|1|event|list your notifications for events|user|
 LYRICS|1|song and creator|Retrieves the lyrics for a given song|none|
 MOVENOTIFY|0|streamer channel|Moves your notifications to another channel|none|
-NOTIFICATIONS|1|none|Will return list all of your notifications|none|
+NOTIFICATIONS|1|event|Will return list all of your notifications|none|
 NOTIFY|1|streamer event|Enables notifications for a given streamern on an certain event. Available events: live/offline/title/game/all/emote_removed/emote_added|none|
 PING|1|none|Just a Ping command 4Head|none|
 RATELIMIT|4|none|Check the ratelimit|none|
@@ -42,7 +42,7 @@ RPSPLAYERGAME|1|player|Play a game of rps|none|
 RPSSTATS|1|none|Provides your stats for rps|username|
 SEARCHUSER|4|username|Search for a certain user in the database|none|
 SETPERMISSIONS|4|username permissionlevel|Sets the permissionslevel to the given level for a given user|none|
-STATS|1|stats to check for|Provides your stats for cookie/rps/emotegame|user|
+STATS|1|stats|Provides your stats for cookie/rps/emotegame|user|
 SUGGEST|1|suggestion|Suggest something for helltfbot|none|
 TIMEOUTSEARCH|1|user|Searches for the last timeout for a certain user. Only tracks timeouts longer than 300s|channel|
 TRACK|1|channel|Used to make the watch client join a new channel to track|none|
