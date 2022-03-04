@@ -106,7 +106,7 @@ module.exports.getSuggestionForUser = async id => {
 	return result.length
 }
 module.exports.insertNewPing = async(user_id, channel, message, by_user)=>{
-	let command = `INSERT INTO PINGS (TWITCH_ID, LAST_PING_CHANNEL, LAST_PING_TIME, BY_USER, MESSAGE) VALUES('${user_id}','${channel}','${Date.now()}','${by_user}',${mysql.escape(message)})`
+	let command = `INSERT INTO pings (TWITCH_ID, LAST_PING_CHANNEL, LAST_PING_TIME, BY_USER, MESSAGE) VALUES('${user_id}','${channel}','${Date.now()}','${by_user}',${mysql.escape(message)})`
 	return await query(command)
 }
 module.exports.getLatestSuggestionId = async () => {
@@ -649,7 +649,7 @@ module.exports.EMOTES =  "EMOTES",
 module.exports.IGNOED_PING_USER =  "IGNOED_PING_USER",
 module.exports.LASTPING =  "LASTPING",
 module.exports.NOTIFY =  "NOTIFY",
-module.exports.PINGS =  "PINGS",
+module.exports.PINGS =  "pings",
 module.exports.RPS_STATS =  "RPS_STATS",
 module.exports.SUGGESTIONS =  "SUGGESTION",
 module.exports.TIMEOUT_USER =  "TIMOUT_USER",
